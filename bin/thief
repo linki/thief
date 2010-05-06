@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+
+#$LOAD_PATH.push File.join(File.dirname(__FILE__), "/../lib" )
+#require 'mastermind'
+
+require 'rubygems' if RUBY_VERSION < '1.9'
+require 'bundler'
+Bundler.setup
+
+$:.push File.expand_path('../../lib', __FILE__)
+require 'thief'
+
+Thief.setup!
+
+@person = Thief::Person.create(
+  :name => "Test person"
+)
+
+repository do
+  Thief::Person.all.each { |person| puts person.name }
+end
+
+# game = Mastermind::Game.new(STDOUT)
+# game.start(%w[r g y c])
+# while guess = gets
+#   game.guess guess.split
+# end
