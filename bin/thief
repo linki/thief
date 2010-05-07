@@ -1,8 +1,4 @@
 #!/usr/bin/env ruby
-
-#$LOAD_PATH.push File.join(File.dirname(__FILE__), "/../lib" )
-#require 'mastermind'
-
 require 'rubygems' if RUBY_VERSION < '1.9'
 require 'bundler'
 Bundler.setup
@@ -12,13 +8,21 @@ require 'thief'
 
 Thief.setup!
 
-@person = Thief::Person.create(
-  :name => "Test person"
-)
+vorname  = "Angela"
+nachname = "Merkel"
 
-repository do
-  Thief::Person.all.each { |person| puts person.name }
-end
+Thief.fetch(:first_name => vorname, :last_name => nachname)
+Thief.integrate!
+
+Thief::Person.all.each { |person| puts "#{person.name}" }
+
+#require 'rest_client'
+
+#response = RestClient.get 'http://v1.d-api.de/parlament.bund.politiker/get', :bundestag_id => 'ackermann_jens' #, :accept => :json
+
+#puts Jresponse.body
+
+
 
 # game = Mastermind::Game.new(STDOUT)
 # game.start(%w[r g y c])

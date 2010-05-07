@@ -1,10 +1,34 @@
 require 'dm-core'
 
+require 'thief/etl'
+require 'thief/integrator'
 require 'thief/person'
 
+# require all etl.rb files in subfolders (/lib/thief/**/etl.rb)
+Dir["#{File.dirname(__FILE__)}/thief/**/etl.rb"].each {|f| require f}
+
+# require all integrator.rb files in subfolders (/lib/thief/**/etl.rb)
+Dir["#{File.dirname(__FILE__)}/thief/**/integrator.rb"].each {|f| require f}
+
+# require all person.rb files in subfolders (/lib/thief/**/etl.rb)
+Dir["#{File.dirname(__FILE__)}/thief/**/person.rb"].each {|f| require f}
+
 module Thief
+  def self.fetch(arguments)
+    Person.all.destroy
+    ETL.children.each do |child|
+      child.fetch(arguments)
+    end
+  end
+  
+  def self.integrate!
+    Integrator.children.each do |child|
+      child.integrate!
+    end 
+  end
+  
   def self.setup!
-    DataMapper::Logger.new($stdout, :debug)    
+    DataMapper::Logger.new($stdout, :debug)
     connect!
     
     # check for tables
