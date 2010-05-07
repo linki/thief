@@ -11,10 +11,14 @@ Thief.setup!
 vorname  = "Angela"
 nachname = "Merkel"
 
+# here is the interesting part
+
 Thief.fetch(:first_name => vorname, :last_name => nachname)
 Thief.integrate!
 
-Thief::Person.all.each { |person| puts "#{person.name}" }
+Thief::Person.all.each { |person| puts person.name }
+
+
 
 #require 'rest_client'
 

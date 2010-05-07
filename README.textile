@@ -1,0 +1,42 @@
+h1. Thief
+
+h2. Installation
+
+<pre>
+  gem install bundler
+  bundle install
+  rake thief:create_tables
+</pre>
+
+h2. Usage
+
+<pre>
+  ruby bin/thief
+</pre>
+
+h2. Internals
+
+<pre>
+  Thief.fetch(:first_name => vorname, :last_name => nachname)
+</pre>
+
+Will go through all found ETLs (/thief/../etl.rb) and call the fetch method with the same params.
+Each ETL has it's own table for "Persons" (dapi_people) and will store all the information in there
+
+<pre>
+  Thief.integrate!
+</pre>
+
+Will go through all found Integrators (/thief/../integrator.rb) and call the integrate method.
+Each Integrator will convert it's own Person-schema to the integrated schema (Thief::DAPI::Person -> Thief::Person)
+
+That's assignment 2.
+
+<pre>
+  Thief::Person.all.each { |person| puts person.name }
+</pre>
+
+prints out the stored and integrated people.
+
+You can copy the dapi folder and implement the new ETL, Integrator and Person object for another source
+
