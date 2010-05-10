@@ -3,7 +3,7 @@ require 'rubygems' if RUBY_VERSION < '1.9'
 require 'bundler'
 Bundler.setup
 
-$:.push File.expand_path('../../lib', __FILE__)
+$:.unshift File.expand_path('../../lib', __FILE__)
 require 'thief'
 
 Thief.setup!
@@ -18,15 +18,11 @@ Thief.integrate!
 
 Thief::Person.all.each { |person| puts person.name }
 
-
-
 #require 'rest_client'
 
 #response = RestClient.get 'http://v1.d-api.de/parlament.bund.politiker/get', :bundestag_id => 'ackermann_jens' #, :accept => :json
 
-#puts Jresponse.body
-
-
+#puts response.body
 
 # game = Mastermind::Game.new(STDOUT)
 # game.start(%w[r g y c])
