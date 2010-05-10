@@ -7,6 +7,8 @@ gem 'rake'
 gem 'rest-client'
 gem 'yajl-ruby'
 
+gem 'rubyzip'
+
 group :test do
   gem 'rspec'
 end
