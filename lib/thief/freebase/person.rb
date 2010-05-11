@@ -1,5 +1,5 @@
 module Thief
-  module Wikipedia
+  module Freebase
     class Person
       include DataMapper::Resource
     

@@ -29,8 +29,8 @@ module Thief
         return true
       end
       
-      def self.fetch(arguments)
-        Person.all.destroy        
+      def self.fetch
+        repository.delete(Person.all)    
         if (!File.exist? FILENAME)
           download_file!
         end
