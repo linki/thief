@@ -13,6 +13,6 @@ task :default => :spec
 
 namespace :thief do
   task :create_tables do
-    Thief.create_tables!
+    Thief.create_tables
   end
 end

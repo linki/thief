@@ -6,15 +6,14 @@ Bundler.setup
 $:.unshift File.expand_path('../../lib', __FILE__)
 require 'thief'
 
-Thief.setup!
-
-vorname  = "Angela"
-nachname = "Merkel"
+Thief.setup
 
 # here is the interesting part
 
-Thief.fetch(:first_name => vorname, :last_name => nachname)
-Thief.integrate!
+repository.delete(Thief::Person.all)
+
+Thief.fetch
+Thief.integrate
 
 Thief::Person.all.each { |person| puts person.name }
 
