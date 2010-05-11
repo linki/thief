@@ -17,7 +17,7 @@ h2. Usage
 h2. Internals
 
 <pre>
-  Thief.fetch(:first_name => vorname, :last_name => nachname)
+  Thief.fetch(:first_name => 'Angela', :last_name => 'Merkel')
 </pre>
 
 Will go through all found ETLs (/thief/../etl.rb) and call the fetch method with the same params.

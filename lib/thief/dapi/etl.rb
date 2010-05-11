@@ -1,23 +1,21 @@
-require 'uri'
-require 'yajl/gzip'
-require 'yajl/deflate'
-require 'yajl/http_stream'
+require 'yajl'
+require 'rest_client'
  
 module Thief
   module DAPI
     class ETL < Thief::ETL
-      def self.fetch(arguments)
-        Person.all.destroy        
+      def self.fetch
+        repository.delete(Person.all)
         
-        first_name = arguments[:first_name]
-        last_name  = arguments[:last_name]
-        
-        url = URI.parse("http://v1.d-api.de/parlament.bund.politiker/get?vorname=#{first_name}&nachname=#{last_name}&limit=10&output_type=json")
-        Yajl::HttpStream.get(url) do |response_hash|
-          # response_hash['data'].first.each do |key, val|
-          #   puts "#{key} - #{val}"
-          # end
-          response_hash['data'].each do |person_data|
+        chunk_size = 200
+        start_at = 0
+        found_people = 0
+
+        loop do
+          json_string = RestClient.get("http://v1.d-api.de/parlament.bund.politiker?output_type=json&limit=#{start_at},#{chunk_size}")
+          parsed_json = Yajl::Parser.parse(json_string)
+
+          parsed_json['data'].each do |person_data|
             person = Person.new
             person.external_id = person_data['id']
             [:bundestag_id, :vorname, :nachname, :zusatz, :ausgeschieden, :gestorben, :biografie, :partei, :wahlkreis, :wahlart, :url, :bundestag_image, :bundestag_image_source,
@@ -26,8 +24,20 @@ module Thief
                person.send("#{attribute}=", person_data[attribute.to_s])
             end
             person.save!
+            
+            found_people += 1
           end
+
+          parsed_json['data'].each do |person_data|
+            puts "#{person_data['vorname']} #{person_data['nachname']}"
+          end
+          
+          break if parsed_json['data'].size < chunk_size
+            
+          start_at += chunk_size
         end
+        
+        puts "Found #{found_people} people"
       end
     end
   end

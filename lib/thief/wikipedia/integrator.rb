@@ -1,7 +1,7 @@
 module Thief
   module Wikipedia
     class Integrator < Thief::Integrator
-      def self.integrate!
+      def self.integrate
         Person.all.each do |person|
           #Thief::Person.create(
           #  :first_name => person.vorname,

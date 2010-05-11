@@ -65,8 +65,8 @@ module Thief
         FileUtils.rm_rf(TMPDIR)
       end
       
-      def self.fetch(arguments)
-        Person.all.destroy        
+      def self.fetch
+        repository.delete(Person.all)
         if (!File.exist? FILENAME)
           download_file!
         end

@@ -1,2 +1,4 @@
 .bundle
 db/*.sqlite3
+tmp
+lib/thief/wikipedia/persondata.txt
