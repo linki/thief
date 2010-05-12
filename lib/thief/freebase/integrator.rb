@@ -1,5 +1,5 @@
 module Thief
-  module Wikipedia
+  module Freebase
     class Integrator < Thief::Integrator
       def self.integrate
         Person.all.each do |person|
@@ -8,10 +8,6 @@ module Thief
           #  :last_name  => person.nachname
           #)
         end
-      end
-      
-      def self.enabled?
-        ETL.enabled?
       end
     end
   end

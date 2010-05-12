@@ -8,9 +8,6 @@ h2. Installation
   rake thief:create_tables
 </pre>
 
-Download the following file http://toolserver.org/~sk/pd/output_pd_export.zip, rename the file output_pd_export.txt to persondata.txt 
-and place it in lib/thief/wikipedia
-
 h2. Usage
 
 <pre>
@@ -46,3 +43,10 @@ prints out the stored and integrated people.
 
 You can copy the dapi folder and implement the new ETL, Integrator and Person object for another source
 
+Special download mechanism in Thief::Wikipedia::ETL loads the necessary txt file which contains the person data if the file doesn't exist.
+
+<pre>
+  Thief::Wikipedia:ETL.download_file!
+</pre>
+This method is called by the fetch method if the necessary file containing the person data doesn't exist. It will download the zip file, unzip it and rename and move the contained text file to the
+wikipedia directory.
