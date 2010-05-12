@@ -20,7 +20,6 @@ module Thief
           found_people = 0
           
           source_file = "#{Thief.cache_dir}/imbd/#{source}"
-
           puts "parsing #{source_file}..."
           
           File.open(source_file, 'rb').each do |line|
@@ -52,10 +51,11 @@ module Thief
         puts "downloading #{uri}..."
         source = open(uri)
 
-        puts "extracting #{uri} to #{Thief.cache_dir}/imbd/#{target_name}..."
-        unzipped_source = Zlib::GzipReader.new(source)
-
         destination = "#{Thief.cache_dir}/imbd/#{target_name}"
+        
+        puts "extracting #{uri} to #{destination}..."
+        unzipped_source = Zlib::GzipReader.new(source)
+        
         target_file = File.open(destination, 'wb')
         target_file.write(unzipped_source.read)
         target_file.close
