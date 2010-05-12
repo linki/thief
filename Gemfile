@@ -9,6 +9,8 @@ gem 'yajl-ruby'
 
 gem 'rubyzip'
 
+gem 'sinatra'
+
 group :test do
   gem 'rspec'
 end

@@ -9,6 +9,10 @@ module Thief
           )
         end
       end
+      
+      def self.enabled?
+        ETL.enabled?
+      end      
     end
   end
 end

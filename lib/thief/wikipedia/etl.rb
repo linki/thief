@@ -100,6 +100,10 @@ module Thief
         end
         file.close
       end
+      
+      def self.enabled?
+        true
+      end
     end
   end
 end

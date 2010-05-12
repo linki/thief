@@ -1,0 +1,40 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+require 'bundler'
+Bundler.setup
+
+$:.unshift File.expand_path('../../lib', __FILE__)
+require 'thief'
+
+require 'sinatra'
+require 'erb'
+
+Thief.setup
+
+get '/' do
+  @people = Thief::Person.all(:order => [:first_name, :last_name])
+  erb :index
+end
+
+# get '/people/page/:page' do
+#   @people = Thief::Person.all(:offset => 100 * params[:page].to_i, :limit => 100)
+#   erb :index
+# end
+
+__END__
+
+@@ index
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Informationsintegration</title>
+  </head>
+  <body>
+    <h1>Found People: <%= @people.size %></h1>
+    <ul>
+    <% @people.each do |person| %>
+      <li><%= person.first_name %> <%= person.last_name %></li>
+    <% end %>
+    </ul>
+  </body>
+</html>

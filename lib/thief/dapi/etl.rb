@@ -7,7 +7,7 @@ module Thief
       def self.fetch
         repository.delete(Person.all)
         
-        chunk_size = 200
+        chunk_size = 500
         start_at = 0
         found_people = 0
 
@@ -38,6 +38,10 @@ module Thief
         end
         
         puts "Found #{found_people} people"
+      end
+      
+      def self.enabled?
+        true
       end
     end
   end

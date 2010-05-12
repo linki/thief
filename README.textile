@@ -14,24 +14,27 @@ and place it in lib/thief/wikipedia
 h2. Usage
 
 <pre>
-  ruby bin/thief
+  bin/thief
+  bin/server
 </pre>
+
+Then browse to http://localhost:4567
 
 h2. Internals
 
 <pre>
-  Thief.fetch(:first_name => 'Angela', :last_name => 'Merkel')
+  Thief.fetch
 </pre>
 
-Will go through all found ETLs (/thief/../etl.rb) and call the fetch method with the same params.
-Each ETL has it's own table for "Persons" (dapi_people) and will store all the information in there
+Will go through all found enabled ETLs (/thief/../etl.rb) and call the fetch method.
+Each ETL has its own table for "Person" objects (dapi_people, dapi_wikipedia) and will store all the information in there
 
 <pre>
-  Thief.integrate!
+  Thief.integrate
 </pre>
 
-Will go through all found Integrators (/thief/../integrator.rb) and call the integrate method.
-Each Integrator will convert it's own Person-schema to the integrated schema (Thief::DAPI::Person -> Thief::Person)
+Will go through all found enabled Integrators (/thief/../integrator.rb) and call the integrate method.
+Each Integrator will convert its own Person-schema to the integrated schema (Thief::DAPI::Person -> Thief::Person)
 
 That's assignment 2.
 

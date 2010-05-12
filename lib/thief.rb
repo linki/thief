@@ -19,11 +19,15 @@ Dir[File.expand_path('../thief/**/person.rb', __FILE__)].each {|f| require f}
 module Thief
   class << self
     def fetch
-      ETL.children.each(&:fetch)
+      ETL.children.each do |etl|
+        etl.fetch if etl.enabled?
+      end
     end
   
     def integrate
-      Integrator.children.each(&:integrate)
+      Integrator.children.each do |integrator|
+        integrator.integrate if integrator.enabled?
+      end
     end
     
     def configure
@@ -49,6 +53,10 @@ module Thief
     def create_tables
       setup
       DataMapper.auto_migrate!
+    end
+    
+    def cache_dir
+      File.expand_path('../../tmp/cache', __FILE__)
     end
   end
 end
