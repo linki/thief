@@ -17,6 +17,12 @@ h2. Usage
 
 Then browse to http://localhost:4567
 
+<pre>
+  bin/console
+</pre>
+
+Use the interactive console
+
 h2. Internals
 
 <pre>
