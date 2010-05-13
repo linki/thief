@@ -68,7 +68,7 @@ module Thief
       end
       
       def self.enabled?
-        false
+        true
       end
     end
   end
