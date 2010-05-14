@@ -78,7 +78,7 @@ module Thief
             person.biography = mbio.captures[0].gsub(/(<p>|<\/p>)/, '')
           end
           # extra credit
-          mextra = doc.match(/<b>Extra credit<\/b>\": (.+?)<\/p>/m)
+          mextra = doc.match(/<b>Extra credit<\/b>: (.+?)<\/p>/m)
           if (mextra != nil and mextra.captures.size == 1)
             person.extra_credit = mextra.captures[0]
           end
