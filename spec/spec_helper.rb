@@ -1,6 +1,3 @@
-require 'rubygems'
-require 'bundler'
-Bundler.setup
+require File.expand_path('../../lib/boot', __FILE__)
 
-$:.unshift File.expand_path('../../lib', __FILE__)
 require 'thief'
