@@ -2,6 +2,8 @@ source 'http://rubygems.org'
 
 gem 'dm-core'
 gem 'do_sqlite3'
+gem 'do_mysql'
+gem 'do_postgres'
 gem 'rake'
 
 gem 'rest-client'

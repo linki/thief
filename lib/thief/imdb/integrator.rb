@@ -1,5 +1,5 @@
 module Thief
-  module IMDB
+  module IMDb
     class Integrator < Thief::Integrator
       def self.integrate
         Person.all.each do |person|

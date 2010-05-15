@@ -9,8 +9,12 @@ module Thief
     property :first_name, String   # A varchar type string, for short strings
     property :last_name,  String   # A varchar type string, for short strings
     
-    def name
-      "#{first_name} #{last_name}"
+    def self.delete_all
+      DataMapper.repository.delete(self.all)
     end
+
+    def name
+      [first_name, last_name].join(' ')
+    end    
   end
 end

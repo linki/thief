@@ -1,15 +1,15 @@
-require 'rubygems'
-require 'bundler'
-Bundler.setup
+require File.expand_path('../lib/boot', __FILE__)
 
 require 'rake'
+require 'spec/rake/spectask'
 
-$:.unshift File.expand_path('../lib', __FILE__)
 require 'thief'
 
-require 'spec/rake/spectask'
 Spec::Rake::SpecTask.new(:spec)
 task :default => :spec
+
+db_config = File.expand_path('../config/database.yml', __FILE__)
+Thief.setup(db_config)
 
 namespace :thief do
   task :create_tables do

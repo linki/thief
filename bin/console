@@ -1,11 +1,14 @@
 #!/usr/bin/env ruby
 require File.expand_path('../../lib/boot', __FILE__)
 
-require 'thief'
-
 require 'irb'
 require 'irb/completion'
 
-Thief.setup
+require 'thief'
+
+db_config = File.expand_path('../../config/database.yml', __FILE__)
+Thief.setup(db_config)
+
+# # # # # # # # # # # # # # # # # # # # #
 
 IRB.start

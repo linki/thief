@@ -34,29 +34,27 @@ module Thief
       DataMapper::Logger.new($stdout, :debug)
     end
   
-    def setup
+    def setup(db_config)
       configure
       
-      # An in-memory Sqlite3 connection:
-      # DataMapper.setup(:default, 'sqlite3::memory:')
-    
-      # Sqlite3 connection:
-      DataMapper.setup(:default, 'sqlite3:db/thief.sqlite3')
+      unless db_config =~ /:\/\//
+        require 'yaml'
+        db_config = YAML.load_file(db_config)[Thief.env] unless db_config =~ /:\/\//
+      end  
 
-      # A MySQL connection:
-      # DataMapper.setup(:default, 'mysql://localhost/person_test')
-
-      # A Postgres connection:
-      # DataMapper.setup(:default, 'postgres://localhost/person_test')    
+      DataMapper.setup(:default, db_config)
     end
     
+    def env
+      ENV['THIEF_ENV'] || 'development'
+    end    
+    
     def create_tables
-      setup
       DataMapper.auto_migrate!
     end
     
-    def cache_dir
-      File.expand_path('../../tmp/cache', __FILE__)
+    def tmp_dir
+      File.expand_path('../../tmp', __FILE__)
     end
   end
 end

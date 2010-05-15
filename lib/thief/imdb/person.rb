@@ -1,5 +1,5 @@
 module Thief
-  module IMDB
+  module IMDb
     class Person
       include DataMapper::Resource
     

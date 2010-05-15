@@ -1,12 +1,15 @@
 #!/usr/bin/env ruby
 require File.expand_path('../../lib/boot', __FILE__)
 
-require 'thief'
-
 require 'sinatra'
 require 'erb'
 
-Thief.setup
+require 'thief'
+
+db_config = File.expand_path('../../config/database.yml', __FILE__)
+Thief.setup(db_config)
+
+# # # # # # # # # # # # # # # # # # # # #
 
 get '/' do
   @people = Thief::Person.all(:order => [:first_name, :last_name])

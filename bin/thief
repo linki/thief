@@ -3,14 +3,18 @@ require File.expand_path('../../lib/boot', __FILE__)
 
 require 'thief'
 
-Thief.setup
+db_config = File.expand_path('../../config/database.yml', __FILE__)
+Thief.setup(db_config)
 
-# here is the interesting part
+# # # # # # # # # # # # # # # # # # # # #
 
-repository.delete(Thief::Person.all)
+Thief::Person.delete_all
 
-Thief.fetch
-Thief.integrate
+Thief::IMDb::ETL.fetch
+Thief::IMDb::Integrator.integrate
+
+# Thief.fetch
+# Thief.integrate
 
 Thief::Person.all.each { |person| puts person.name }
 
