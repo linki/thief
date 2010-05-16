@@ -10,11 +10,8 @@ Thief.setup(db_config)
 
 Thief::Person.delete_all
 
-Thief::IMDb::ETL.fetch
-Thief::IMDb::Integrator.integrate
-
-# Thief.fetch
-# Thief.integrate
+Thief.fetch
+Thief.integrate
 
 Thief::Person.all.each { |person| puts person.name }
 

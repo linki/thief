@@ -16,6 +16,10 @@ get '/' do
   erb :index
 end
 
+before do
+  content_type :html, 'charset' => 'utf-8'
+end
+
 # get '/people/page/:page' do
 #   @people = Thief::Person.all(:offset => 100 * params[:page].to_i, :limit => 100)
 #   erb :index
@@ -23,18 +27,21 @@ end
 
 __END__
 
-@@ index
+@@ layout
 <!DOCTYPE html>
 <html>
   <head>
     <title>Informationsintegration</title>
   </head>
   <body>
-    <h1>Found People: <%= @people.size %></h1>
-    <ul>
-    <% @people.each do |person| %>
-      <li><%= person.first_name %> <%= person.last_name %></li>
-    <% end %>
-    </ul>
+    <%= yield %>
   </body>
 </html>
+
+@@ index
+<h1>Found People: <%= @people.size %></h1>
+<ul>
+<% @people.each do |person| %>
+  <li><%= person.first_name %> <%= person.last_name %></li>
+<% end %>
+</ul>
