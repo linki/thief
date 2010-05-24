@@ -2,36 +2,35 @@
 Dir[File.expand_path('../thief/support/*.rb', __FILE__)].each {|f| require f}
 
 require 'dm-core'
+require 'thief/core_ext/dm-core/model'
+
+require 'thief/source'
 
 require 'thief/etl'
 require 'thief/integrator'
 require 'thief/person'
 
-# require all etl.rb files in subfolders (/lib/thief/**/etl.rb)
-Dir[File.expand_path('../thief/**/etl.rb', __FILE__)].each {|f| require f}
-
-# require all integrator.rb files in subfolders (/lib/thief/**/etl.rb)
-Dir[File.expand_path('../thief/**/integrator.rb', __FILE__)].each {|f| require f}
-
-# require all person.rb files in subfolders (/lib/thief/**/etl.rb)
-Dir[File.expand_path('../thief/**/person.rb', __FILE__)].each {|f| require f}
+# require all *.rb files in sources
+Dir[File.expand_path('../thief/sources/*.rb', __FILE__)].each {|f| require f}
 
 module Thief
   class << self
+    attr_writer :sources
+    
+    def sources
+      @sources ||= []
+    end
+    
     def fetch
-      ETL.children.each do |etl|
-        etl.fetch if etl.enabled?
-      end
+      sources.each(&:fetch)
     end
   
     def integrate
-      Integrator.children.each do |integrator|
-        integrator.integrate if integrator.enabled?
-      end
+      sources.each(&:integrate)
     end
     
     def configure
-      DataMapper::Logger.new($stdout, :debug)
+      DataMapper::Logger.new(STDOUT, :debug)
     end
   
     def setup(db_config)
@@ -39,14 +38,14 @@ module Thief
       
       unless db_config =~ /:\/\//
         require 'yaml'
-        db_config = YAML.load_file(db_config)[Thief.env] unless db_config =~ /:\/\//
+        db_config = YAML.load_file(db_config)[Thief.env]
       end  
 
       DataMapper.setup(:default, db_config)
     end
     
     def env
-      ENV['THIEF_ENV'] || 'development'
+      ENV['THIEF_ENV'] ||= 'development'
     end    
     
     def create_tables

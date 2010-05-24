@@ -21,7 +21,7 @@ module Thief
     
     class ETL < Thief::ETL
       
-      def self.get_links
+      def get_links
         document = open(BASEURL).read
         match = document.match(/<div id=\"alpha_nav\">(.*?)<\/div>/m)
         document = ''
@@ -43,8 +43,8 @@ module Thief
         return sites
       end
       
-      def self.fetch
-        repository.delete(Person.all)
+      def fetch
+        Person.delete_all
         
         # get all links
         links = get_links
@@ -105,10 +105,6 @@ module Thief
           person.save!
         end
         
-      end
-      
-      def self.enabled?
-        true
       end
     end
   end

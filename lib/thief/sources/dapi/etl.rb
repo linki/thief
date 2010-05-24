@@ -4,15 +4,16 @@ require 'rest_client'
 module Thief
   module DAPI
     class ETL < Thief::ETL
-      def self.fetch
-        repository.delete(Person.all)
-        
+      def fetch
+        Person.delete_all
+      
         chunk_size = 500
         start_at = 0
         found_people = 0
 
         loop do
-          json_string = RestClient.get("http://v1.d-api.de/parlament.bund.politiker?output_type=json&limit=#{start_at},#{chunk_size}")
+          fetch_url = "http://v1.d-api.de/parlament.bund.politiker?output_type=json&limit=#{start_at},#{chunk_size}"
+          json_string = RestClient.get(fetch_url)
           parsed_json = Yajl::Parser.parse(json_string)
 
           parsed_json['data'].each do |person_data|
@@ -24,24 +25,20 @@ module Thief
                person.send("#{attribute}=", person_data[attribute.to_s])
             end
             person.save!
-            
+          
             found_people += 1
           end
 
           parsed_json['data'].each do |person_data|
             puts "#{person_data['vorname']} #{person_data['nachname']}"
           end
-          
+        
           break if parsed_json['data'].size < chunk_size
-            
+          
           start_at += chunk_size
         end
-        
-        puts "Found #{found_people} people"
-      end
       
-      def self.enabled?
-        true
+        puts "Found #{found_people} people"
       end
     end
   end

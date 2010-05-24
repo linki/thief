@@ -26,17 +26,18 @@ Use the interactive console
 h2. Internals
 
 <pre>
+  Thief.sources << Thief::Source::SomeSource.new
   Thief.fetch
 </pre>
 
-Will go through all found enabled ETLs (/thief/../etl.rb) and call the fetch method.
-Each ETL has its own table for "Person" objects (dapi_people, dapi_wikipedia) and will store all the information in there
+Will go through all assigned sources (found in /thief/sources/*.rb) and call their fetch method.
+Each Source has its own table for "Person" objects (dapi_people, dapi_wikipedia) and will store all the information in there
 
 <pre>
   Thief.integrate
 </pre>
 
-Will go through all found enabled Integrators (/thief/../integrator.rb) and call the integrate method.
+Will go through all assigned sources (same as above) and call their integrate method.
 Each Integrator will convert its own Person-schema to the integrated schema (Thief::DAPI::Person -> Thief::Person)
 
 That's assignment 2.
@@ -47,12 +48,19 @@ That's assignment 2.
 
 prints out the stored and integrated people.
 
-You can copy the dapi folder and implement the new ETL, Integrator and Person object for another source
+You can copy the dapi.rb and dapi-folder to create a new source with ETL, Integrator and Person objects.
 
 Special download mechanism in Thief::Wikipedia::ETL loads the necessary txt file which contains the person data if the file doesn't exist.
 
 <pre>
   Thief::Wikipedia:ETL.download_file!
 </pre>
+
 This method is called by the fetch method if the necessary file containing the person data doesn't exist. It will download the zip file, unzip it and rename and move the contained text file to the
 wikipedia directory.
+
+h2. Special
+
+Thief::ETL now has inheritable mechanisms to download and extract files as well as store them in their specific temporary directories.
+
+Thief::Integrator now has inheritable mechanisms for defining a mapping from a source specific schema to the global schema (experimental and probably useless)
