@@ -1,8 +1,10 @@
 module Thief
   module IMDb
     class Integrator < Thief::Integrator
-      map :first_name => :first_name
-      map :last_name  => :last_name
+      map do |source, target|
+        target.first_name = source.first_name
+        target.last_name  = source.last_name
+      end
     end
   end
 end

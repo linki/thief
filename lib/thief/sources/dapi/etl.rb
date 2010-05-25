@@ -7,8 +7,8 @@ module Thief
       def fetch
         Person.delete_all
       
-        chunk_size = 500
-        start_at = 0
+        chunk_size   = 500
+        start_at     = 0
         found_people = 0
 
         loop do

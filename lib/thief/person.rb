@@ -11,7 +11,11 @@ module Thief
     property :last_name,  String   # A varchar type string, for short strings
 
     def name
-      [title, first_name, last_name].compact.join(' ')
+      [first_name, last_name].compact.join(' ')
+    end    
+
+    def full_name
+      [title, name].compact.join(' ')
     end    
   end
 end

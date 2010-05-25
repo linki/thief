@@ -1,17 +1,18 @@
 module Thief
-  Titles = /^Dr\. / #|h\. c\. |Prof\. |Prof\. Dr\. ]/
+  Titles = /^(Dr\. h\. c\. |Prof\. Dr\. |Dr\. |Prof\. )/
   
   module DAPI
     class Integrator < Thief::Integrator
-      map :vorname  => :first_name do |vorname|
-        match_data = Thief::Titles.match(vorname)
-        match_data ? match_data.post_match.strip : vorname
+      map do |source, target|
+        target.first_name = source.vorname
+        target.last_name  = source.nachname
+        
+        # if a title is present in vorname, split it
+        if match_data = Thief::Titles.match(target.first_name)
+          target.title = match_data.to_s.strip
+          target.first_name = match_data.post_match.strip
+        end
       end
-      map :vorname  => :title do |vorname|
-        match_data = Thief::Titles.match(vorname)
-        match_data ? match_data.to_s.strip : nil
-      end
-      map :nachname => :last_name
     end
   end
 end

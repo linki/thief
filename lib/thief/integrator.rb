@@ -1,21 +1,17 @@
 module Thief
   class Integrator
-    def self.mappings
-      @mappings ||= [] 
-    end
-
-    def self.map(mapping, &block)
-      mappings << [mapping.keys.first, mapping.values.first, block || proc { |source| source }]
+    class << self
+      attr_accessor :mapping
+    
+      def map(&block)
+        mapping = block
+      end
     end
     
     def integrate
       namespace::Person.all.each do |person|
         new_person = ::Thief::Person.new
-        self.class.mappings.each do |mapping|
-          source_value = person.send(mapping[0])
-          target_value = mapping[2].call(source_value)
-          new_person.send("#{mapping[1]}=", target_value)
-        end
+        self.class.mapping.call(person, new_person)
         new_person.save!
       end
     end

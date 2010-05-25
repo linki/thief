@@ -19,4 +19,4 @@ Thief.sources << Thief::Sources::DAPI.new
 Thief.fetch
 Thief.integrate
 
-Thief::Person.all.each { |person| puts person.name }
+Thief::Person.all.each { |person| puts person.full_name }
