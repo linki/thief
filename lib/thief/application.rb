@@ -1,6 +1,5 @@
 Bundler.require(:application) if defined?(Bundler)
 
-require 'thief'
 require 'erb'
 
 module Thief
