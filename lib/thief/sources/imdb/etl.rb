@@ -34,13 +34,13 @@ module Thief
               person.last_name  = person_name.first
               person.save!
               
-              puts "#{person.first_name} #{person.last_name}"
+              puts "#{person.first_name} #{person.last_name}" if $DEBUG
 
               found_people += 1
             end
           end
         
-          puts "Found #{found_people} people in #{source_file}"
+          puts "Found #{found_people} people in #{source_file}" if $DEBUG
         
           overall_found_people += found_people
         end
@@ -49,7 +49,7 @@ module Thief
           FileUtils.rm("#{Thief.tmp_dir}/imdb/#{source}") if File.exists?("#{Thief.tmp_dir}/imdb/#{source}")
         end
       
-        puts "Found #{overall_found_people} people in all sources"
+        puts "Found #{overall_found_people} people in all sources" if $DEBUG
       end
     end
   end

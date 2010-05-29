@@ -1,6 +1,6 @@
-require File.expand_path('../who2/etl',        __FILE__)
-require File.expand_path('../who2/integrator', __FILE__)
-require File.expand_path('../who2/person',     __FILE__)
+['etl', 'integrator', 'person'].each do |lib|
+  require File.expand_path("who2/#{lib}", File.dirname(__FILE__))
+end
 
 module Thief
   module Sources

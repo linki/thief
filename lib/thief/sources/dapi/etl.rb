@@ -1,6 +1,3 @@
-require 'yajl'
-require 'rest_client'
- 
 module Thief
   module DAPI
     class ETL < Thief::ETL
@@ -19,9 +16,11 @@ module Thief
           parsed_json['data'].each do |person_data|
             person = Person.new
             person.external_id = person_data['id']
-            [:bundestag_id, :vorname, :nachname, :zusatz, :ausgeschieden, :gestorben, :biografie, :partei, :wahlkreis, :wahlart, :url, :bundestag_image, :bundestag_image_source,
-             :bundestag_bio_url, :jobs, :geboren_am, :geboren_ort, :familien_stand, :kinder, :religion, :wahlperiode,
-             :wahl_de_id, :wahl_de_image, :wahl_de_image_source, :wahl_de_sociallinks].each do |attribute|
+            [:bundestag_id, :vorname, :nachname, :zusatz, :ausgeschieden, :gestorben, :biografie,
+             :partei, :wahlkreis, :wahlart, :url, :bundestag_image, :bundestag_image_source,
+             :bundestag_bio_url, :jobs, :geboren_am, :geboren_ort, :familien_stand, :kinder,
+             :religion, :wahlperiode, :wahl_de_id, :wahl_de_image, :wahl_de_image_source,
+             :wahl_de_sociallinks].each do |attribute|
                person.send("#{attribute}=", person_data[attribute.to_s])
             end
             person.save!
@@ -31,14 +30,14 @@ module Thief
 
           parsed_json['data'].each do |person_data|
             puts "#{person_data['vorname']} #{person_data['nachname']}"
-          end
-        
+          end if $DEBUG
+          
           break if parsed_json['data'].size < chunk_size
           
           start_at += chunk_size
         end
       
-        puts "Found #{found_people} people"
+        puts "Found #{found_people} people" if $DEBUG
       end
     end
   end

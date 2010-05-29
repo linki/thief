@@ -1,6 +1,6 @@
-require File.expand_path('../dapi/etl',        __FILE__)
-require File.expand_path('../dapi/integrator', __FILE__)
-require File.expand_path('../dapi/person',     __FILE__)
+['etl', 'integrator', 'person'].each do |lib|
+  require File.expand_path("dapi/#{lib}", File.dirname(__FILE__))
+end
 
 module Thief
   module Sources

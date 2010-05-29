@@ -1,6 +1,6 @@
-require File.expand_path('../wikipedia/etl',        __FILE__)
-require File.expand_path('../wikipedia/integrator', __FILE__)
-require File.expand_path('../wikipedia/person',     __FILE__)
+['etl', 'integrator', 'person'].each do |lib|
+  require File.expand_path("wikipedia/#{lib}", File.dirname(__FILE__))
+end
 
 module Thief
   module Sources

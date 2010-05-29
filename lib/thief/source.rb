@@ -1,5 +1,9 @@
 module Thief
   class Source
+    def self.inherited(base)
+      Bundler.require(base.source_name.downcase) if defined?(Bundler)
+    end
+
     def fetch
       etl.fetch
     end
@@ -18,12 +22,12 @@ module Thief
     
   private
     
-    def source_name
-      self.class.name.split('::').last
+    def self.source_name
+      name.split('::').last
     end
     
     def namespace
-      Thief.const_get(source_name)
+      Thief.const_get(self.class.source_name)
     end
   end
 end

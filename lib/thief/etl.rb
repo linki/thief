@@ -51,12 +51,12 @@ module Thief
     
   private
   
-    def source_name
-      self.class.name.split('::')[1]
+    def self.source_name
+      name.split('::')[1]
     end
 
     def namespace
-      Thief.const_get(source_name)
+      Thief.const_get(self.class.source_name)
     end  
   end  
 end

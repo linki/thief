@@ -1,6 +1,6 @@
-require File.expand_path('../imdb/etl',        __FILE__)
-require File.expand_path('../imdb/integrator', __FILE__)
-require File.expand_path('../imdb/person',     __FILE__)
+['etl', 'integrator', 'person'].each do |lib|
+  require File.expand_path("imdb/#{lib}", File.dirname(__FILE__))
+end
 
 module Thief
   module Sources
