@@ -7,7 +7,7 @@ module Thief
     before do
       content_type :html, 'charset' => 'utf-8'
     end
-        
+
     get '/' do
       @people = Thief::Person.all(:order => [:first_name, :last_name])
       erb :index
