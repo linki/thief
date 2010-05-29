@@ -99,6 +99,12 @@ or WEBrick through rackup:
   THIEF_ENV=production rackup --server webrick config.ru
 </pre>
 
+or with shotgun:
+
+<pre>
+  shotgun --env production
+</pre>
+
 and so on..
 
 h2. Special
