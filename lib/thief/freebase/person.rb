@@ -17,7 +17,7 @@ module Thief
       property :meta_web_user_s, String
       property :parents, String
       property :children, String
-      property :eployment_history, String
+      property :employment_history, String
       property :signature, String
       property :spouse_s, String
       property :sibling_s, String
