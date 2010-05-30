@@ -1,14 +1,13 @@
 module Thief
   module Support
     module TrackSubclasses
-      def inherited(child)
-        @children ||= [] 
-        @children << child
-      end 
-
       def children
-        @children || []
+        @children ||= []
       end
+
+      def inherited(child)
+        children << child
+      end 
     end
   end
 end

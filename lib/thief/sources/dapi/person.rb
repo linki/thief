@@ -2,11 +2,11 @@ module Thief
   module DAPI
     class Person
       include DataMapper::Resource
-    
+  
       storage_names[:default] = 'dapi_people'
 
       property :id, Serial   # An auto-increment integer key
-    
+  
       property :external_id,            String    # 369
       property :bundestag_id,           String    # merkel_angela     
       property :vorname,                String    # Dr. Angela (title included)

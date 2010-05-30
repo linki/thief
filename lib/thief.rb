@@ -1,60 +1,63 @@
 # require all *.rb files in support folder (/lib/thief/support/*.rb)
-Dir[File.expand_path('../thief/support/*.rb', __FILE__)].each {|f| require f}
+Dir[File.expand_path('thief/support/*.rb', File.dirname(__FILE__))].each {|f| require f}
 
 require 'dm-core'
+require 'thief/core_ext/dm-core/model'
+
+require 'thief/source'
 
 require 'thief/etl'
 require 'thief/integrator'
 require 'thief/person'
 
-# require all etl.rb files in subfolders (/lib/thief/**/etl.rb)
-Dir[File.expand_path('../thief/**/etl.rb', __FILE__)].each {|f| require f}
-
-# require all integrator.rb files in subfolders (/lib/thief/**/etl.rb)
-Dir[File.expand_path('../thief/**/integrator.rb', __FILE__)].each {|f| require f}
-
-# require all person.rb files in subfolders (/lib/thief/**/etl.rb)
-Dir[File.expand_path('../thief/**/person.rb', __FILE__)].each {|f| require f}
+# require all *.rb files in sources folder (/lib/thief/sources/*.rb)
+Dir[File.expand_path('thief/sources/*.rb', File.dirname(__FILE__))].each {|f| require f}
 
 module Thief
-  class << self
-    def fetch
-      ETL.children.each do |etl|
-        etl.fetch if etl.enabled?
-      end
-    end
-  
-    def integrate
-      Integrator.children.each do |integrator|
-        integrator.integrate if integrator.enabled?
-      end
-    end
-    
-    def configure
-      DataMapper::Logger.new($stdout, :debug)
-    end
-  
-    def setup(db_config)
-      configure
-      
-      unless db_config =~ /:\/\//
-        require 'yaml'
-        db_config = YAML.load_file(db_config)[Thief.env] unless db_config =~ /:\/\//
-      end  
-
-      DataMapper.setup(:default, db_config)
-    end
-    
-    def env
-      ENV['THIEF_ENV'] || 'development'
-    end    
-    
-    def create_tables
-      DataMapper.auto_migrate!
-    end
-    
-    def tmp_dir
-      File.expand_path('../../tmp', __FILE__)
-    end
+  def sources
+    @sources ||= []
   end
+  
+  def fetch
+    sources.each(&:fetch)
+  end
+
+  def integrate
+    sources.each(&:integrate)
+  end
+  
+  def configure
+    DataMapper::Logger.new(STDOUT, $DEBUG ? :debug : :error)
+  end
+  
+  def database=(db_config)
+    unless db_config =~ /:\/\//
+      require 'yaml'
+      db_config = YAML.load_file(db_config)[Thief.env]
+    end  
+
+    DataMapper.setup(:default, db_config)    
+  end
+
+  def setup(db_config = nil)
+    configure
+    self.database = db_config if db_config
+    yield self if block_given?
+  end
+  
+  def env
+    ENV['RACK_ENV'] ||= ENV['THIEF_ENV'] ||= 'development'
+  end    
+  
+  def create_tables
+    DataMapper.auto_migrate!
+  end
+  
+  def tmp_dir
+    File.expand_path('../tmp', File.dirname(__FILE__))
+  end
+  
+  extend self
 end
+
+Bundler.require(:default, Thief.env) if defined?(Bundler)

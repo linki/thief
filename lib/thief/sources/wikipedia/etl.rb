@@ -7,12 +7,12 @@ module Thief
   module Wikipedia
     NEWNAME = 'persondata.txt'
     FILENAME = File.expand_path(File.join(File.dirname(__FILE__), NEWNAME))
-    TMPDIR = File.expand_path(File.join(File.dirname(__FILE__), '..', '..', '..', 'tmp'))
+    TMPDIR = File.expand_path(File.join(File.dirname(__FILE__), '..', '..', '..', '..', 'tmp'))
     TMPZIP = File.join(TMPDIR, 'tmp.zip')
     
     class ETL < Thief::ETL
       
-      def self.find_file(dir)
+      def find_file(dir)
         file = nil
         for entry in Dir.new(File.expand_path(dir)) do
           if (entry.match(/.+\.txt/))
@@ -28,7 +28,7 @@ module Thief
         return file
       end
       
-      def self.download_file!
+      def download_file!
         # check tmp dir and create
         puts 'checking directory'
         if (!File.exist? TMPDIR)
@@ -65,7 +65,7 @@ module Thief
         FileUtils.rm_rf(TMPDIR)
       end
       
-      def self.fetch
+      def fetch
         repository.delete(Person.all)
         if (!File.exist? FILENAME)
           download_file!
@@ -99,10 +99,6 @@ module Thief
         
         end
         file.close
-      end
-      
-      def self.enabled?
-        true
       end
     end
   end

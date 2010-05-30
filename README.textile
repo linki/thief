@@ -26,20 +26,19 @@ Use the interactive console
 h2. Internals
 
 <pre>
+  Thief.sources << Thief::Source::SomeSource.new
   Thief.fetch
 </pre>
 
-Will go through all found enabled ETLs (/thief/../etl.rb) and call the fetch method.
-Each ETL has its own table for "Person" objects (dapi_people, dapi_wikipedia) and will store all the information in there
+Will go through all assigned sources (must be located in /thief/sources/*.rb) and call their fetch method.
+Each Source has its own table for "Person" objects (dapi_people, dapi_wikipedia) and will store all the information in there.
 
 <pre>
   Thief.integrate
 </pre>
 
-Will go through all found enabled Integrators (/thief/../integrator.rb) and call the integrate method.
+Will go through all assigned sources (same as above) and call their integrate method.
 Each Integrator will convert its own Person-schema to the integrated schema (Thief::DAPI::Person -> Thief::Person)
-
-That's assignment 2.
 
 <pre>
   Thief::Person.all.each { |person| puts person.name }
@@ -47,12 +46,69 @@ That's assignment 2.
 
 prints out the stored and integrated people.
 
-You can copy the dapi folder and implement the new ETL, Integrator and Person object for another source
+h2. Wikipedia
 
 Special download mechanism in Thief::Wikipedia::ETL loads the necessary txt file which contains the person data if the file doesn't exist.
 
 <pre>
   Thief::Wikipedia:ETL.download_file!
 </pre>
+
 This method is called by the fetch method if the necessary file containing the person data doesn't exist. It will download the zip file, unzip it and rename and move the contained text file to the
 wikipedia directory.
+
+h2. Extending
+
+You can copy the dapi.rb and dapi-folder to create a new source with ETL, Integrator and Person objects.
+The defaults will look under the specific namespace for the etl and integrator classes. (Thief::YourLibrary::ETL)
+You can change that by overwriting the etl and integrator methods.
+
+<pre>
+  require 'somewhere/over/the/rainbow'
+
+  module Thief
+    module Sources
+      class YourAwesomeSource
+        def etl
+          ::OneETLToRuleThemAll.new
+        end
+      end
+    end
+  end
+</pre>
+
+h2. Another way to start the server
+
+Start the app on any rack-compatible webserver with the config.ru file. (in production mode in the examples)
+
+Thin:
+
+<pre>
+  thin --rackup config.ru --environment production start
+</pre>
+
+or Unicorn:
+
+<pre>
+  unicorn --env production
+</pre>
+
+or WEBrick through rackup:
+
+<pre>
+  THIEF_ENV=production rackup --server webrick config.ru
+</pre>
+
+or with shotgun:
+
+<pre>
+  shotgun --env production
+</pre>
+
+and so on..
+
+h2. Special
+
+Thief::ETL now has inheritable mechanisms to download and extract files as well as store them in their specific temporary directories.
+
+Thief::Integrator now has inheritable mechanisms for defining a mapping from a source specific schema to the global schema (experimental)

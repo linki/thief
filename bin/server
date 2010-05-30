@@ -1,47 +1,13 @@
 #!/usr/bin/env ruby
-require File.expand_path('../../lib/boot', __FILE__)
-
-require 'sinatra'
-require 'erb'
+require File.expand_path('../lib/boot', File.dirname(__FILE__))
 
 require 'thief'
+require 'thief/application'
 
-db_config = File.expand_path('../../config/database.yml', __FILE__)
-Thief.setup(db_config)
+Thief.setup do |config|
+  config.database = File.expand_path('../config/database.yml', File.dirname(__FILE__))
+end
 
 # # # # # # # # # # # # # # # # # # # # #
 
-get '/' do
-  @people = Thief::Person.all(:order => [:first_name, :last_name])
-  erb :index
-end
-
-before do
-  content_type :html, 'charset' => 'utf-8'
-end
-
-# get '/people/page/:page' do
-#   @people = Thief::Person.all(:offset => 100 * params[:page].to_i, :limit => 100)
-#   erb :index
-# end
-
-__END__
-
-@@ layout
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Informationsintegration</title>
-  </head>
-  <body>
-    <%= yield %>
-  </body>
-</html>
-
-@@ index
-<h1>Found People: <%= @people.size %></h1>
-<ul>
-<% @people.each do |person| %>
-  <li><%= person.first_name %> <%= person.last_name %></li>
-<% end %>
-</ul>
+Thief::Application.run!

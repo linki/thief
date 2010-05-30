@@ -6,12 +6,18 @@ gem 'do_mysql'
 gem 'do_postgres'
 gem 'rake'
 
-gem 'rest-client'
-gem 'yajl-ruby'
+group :dapi do
+  gem 'rest-client', :require => 'rest_client'
+  gem 'yajl-ruby', :require => 'yajl'
+end
 
-gem 'rubyzip'
+group :wikipedia do
+  gem 'rubyzip', :require => 'zip/zip'
+end
 
-gem 'sinatra'
+group :application do
+  gem 'sinatra', :require => 'sinatra/base'
+end
 
 group :test do
   gem 'rspec'

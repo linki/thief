@@ -11,7 +11,7 @@ module Thief
 
     class ETL < Thief::ETL
       
-      def self.download_file!
+      def download_file!
         # TODO: catch all errors!
         
         # get correct URL
@@ -29,8 +29,8 @@ module Thief
         return true
       end
       
-      def self.fetch
-        repository.delete(Person.all)    
+      def fetch
+        Person.delete_all
         if (!File.exist? FILENAME)
           download_file!
         end
@@ -61,10 +61,6 @@ module Thief
         
         end
         file.close
-      end
-      
-      def self.enabled?
-        true
       end
     end
   end
