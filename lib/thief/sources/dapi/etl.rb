@@ -29,15 +29,15 @@ module Thief
           end
 
           parsed_json['data'].each do |person_data|
-            puts "#{person_data['vorname']} #{person_data['nachname']}"
-          end if $DEBUG
+            Thief.logger.debug "#{person_data['vorname']} #{person_data['nachname']}"
+          end
           
           break if parsed_json['data'].size < chunk_size
           
           start_at += chunk_size
         end
       
-        puts "Found #{found_people} people" if $DEBUG
+        Thief.logger.debug "Found #{found_people} people"
       end
     end
   end
