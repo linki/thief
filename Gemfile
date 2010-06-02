@@ -4,6 +4,8 @@ gem 'dm-core'
 gem 'do_sqlite3'
 gem 'do_mysql'
 gem 'do_postgres'
+gem 'fastthread' # for dm-core
+
 gem 'rake'
 
 group :dapi do

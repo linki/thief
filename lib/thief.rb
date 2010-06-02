@@ -33,21 +33,36 @@ module Thief
   def database=(db_config)
     unless db_config =~ /:\/\//
       require 'yaml'
-      db_config = YAML.load_file(db_config)[Thief.env]
+      db_config = YAML.load_file(db_config)[Thief.env][Thief.db_adapter]
     end  
 
     DataMapper.setup(:default, db_config)    
   end
-
+  
   def setup(db_config = nil)
     configure
     self.database = db_config if db_config
     yield self if block_given?
   end
   
+  def logger
+    unless @logger
+      require 'logger'    
+      @logger = Logger.new(STDOUT)
+      @logger.level = $DEBUG ? Logger::DEBUG : Logger::ERROR
+      @logger.datetime_format = "%H:%M:%S"
+    end
+    @logger
+  end
+  
   def env
     ENV['RACK_ENV'] ||= ENV['THIEF_ENV'] ||= 'development'
-  end    
+  end
+  
+  
+  def db_adapter
+    ENV['THIEF_DB_ADAPTER'] ||= 'sqlite3'
+  end
   
   def create_tables
     DataMapper.auto_migrate!

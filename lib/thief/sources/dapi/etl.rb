@@ -21,7 +21,7 @@ module Thief
              :bundestag_bio_url, :jobs, :geboren_am, :geboren_ort, :familien_stand, :kinder,
              :religion, :wahlperiode, :wahl_de_id, :wahl_de_image, :wahl_de_image_source,
              :wahl_de_sociallinks].each do |attribute|
-               person.send("#{attribute}=", person_data[attribute.to_s])
+               person.send("#{attribute}=", person_data[attribute.to_s][0..254]) if person_data[attribute.to_s]
             end
             person.save!
           
@@ -29,15 +29,15 @@ module Thief
           end
 
           parsed_json['data'].each do |person_data|
-            puts "#{person_data['vorname']} #{person_data['nachname']}"
-          end if $DEBUG
+            Thief.logger.debug "#{person_data['vorname']} #{person_data['nachname']}"
+          end
           
           break if parsed_json['data'].size < chunk_size
           
           start_at += chunk_size
         end
       
-        puts "Found #{found_people} people" if $DEBUG
+        Thief.logger.debug "Found #{found_people} people"
       end
     end
   end
