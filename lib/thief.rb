@@ -33,12 +33,12 @@ module Thief
   def database=(db_config)
     unless db_config =~ /:\/\//
       require 'yaml'
-      db_config = YAML.load_file(db_config)[Thief.env]
+      db_config = YAML.load_file(db_config)[Thief.env][Thief.db_adapter]
     end  
 
     DataMapper.setup(:default, db_config)    
   end
-
+  
   def setup(db_config = nil)
     configure
     self.database = db_config if db_config
@@ -57,7 +57,12 @@ module Thief
   
   def env
     ENV['RACK_ENV'] ||= ENV['THIEF_ENV'] ||= 'development'
-  end    
+  end
+  
+  
+  def db_adapter
+    ENV['THIEF_DB_ADAPTER'] ||= 'sqlite3'
+  end
   
   def create_tables
     DataMapper.auto_migrate!
