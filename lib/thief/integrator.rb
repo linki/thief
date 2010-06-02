@@ -4,7 +4,7 @@ module Thief
       attr_accessor :mapping
     
       def map(&block)
-        @mapping = block
+        self.mapping = block
       end
     end
     
