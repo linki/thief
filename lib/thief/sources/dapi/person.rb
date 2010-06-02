@@ -26,13 +26,13 @@ module Thief
       property :geboren_am,             String    # 1954-07-17
       property :geboren_ort,            String    # empty (Hamburg)
       property :familien_stand,         String    # empty (verheiratet)
-      property :kinder,                 Integer   # 0
+      property :kinder,                 String    # 0
       property :religion,               String    #
       property :wahlperiode,            Integer   # 17
       property :wahl_de_id,             Integer   # 11
       property :wahl_de_image,          String    # http://static.wahl.compuccinocloud.com/imagecache/politiker_mittel/kdn_86192.jpg
       property :wahl_de_image_source,   String    # www.wahl.de
-      property :wahl_de_sociallinks,    String    # [{"url"=>"http://www.meinvz.net/Profile/94f3c589f34e637e", "service"=>"meinvz", "fake"=>"0"}, {"url"=>"http...
+      property :wahl_de_sociallinks,    Text      # [{"url"=>"http://www.meinvz.net/Profile/94f3c589f34e637e", "service"=>"meinvz", "fake"=>"0"}, {"url"=>"http...
     end
   end
 end

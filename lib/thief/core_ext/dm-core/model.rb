@@ -5,3 +5,5 @@ module DataMapper
     end
   end
 end
+
+DataMapper::Property::DEFAULT_LENGTH = 255

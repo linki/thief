@@ -21,7 +21,7 @@ module Thief
              :bundestag_bio_url, :jobs, :geboren_am, :geboren_ort, :familien_stand, :kinder,
              :religion, :wahlperiode, :wahl_de_id, :wahl_de_image, :wahl_de_image_source,
              :wahl_de_sociallinks].each do |attribute|
-               person.send("#{attribute}=", person_data[attribute.to_s])
+               person.send("#{attribute}=", person_data[attribute.to_s][0..254]) if person_data[attribute.to_s]
             end
             person.save!
           
