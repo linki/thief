@@ -7,7 +7,7 @@ development:
     
   mysql:
     adapter: mysql
-    encoding: utf8
+    encoding: UTF-8
     reconnect: false
     database: thief_development
     pool: 5
@@ -17,7 +17,7 @@ development:
     
   postgresql:
     adapter: postgres
-    encoding: unicode
+    encoding: UTF-8
     database: thief_development
     pool: 5
     username: postgres
