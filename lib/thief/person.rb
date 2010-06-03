@@ -19,6 +19,7 @@ module Thief
     property :profession, String
     property :nationality, String
     property :religion, String
+    property :source, String
 
     def name
       [first_name, last_name].compact.join(' ')
