@@ -77,6 +77,7 @@ module Thief
           person = Person.new
           # split every line and extract the right parts
           for part in line.split(/\t/) do
+            part = part[0..254]
             case c
               when 3 # name
                 person.name = part

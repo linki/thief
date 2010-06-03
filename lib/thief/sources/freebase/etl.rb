@@ -54,7 +54,7 @@ module Thief
             if (c == 24)
               break
             end
-            person.send("#{attrs[c]}=", part)
+            person.send("#{attrs[c]}=", part[0..254])
             c += 1
           end
           person.save!
