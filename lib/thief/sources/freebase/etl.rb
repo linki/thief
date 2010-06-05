@@ -38,7 +38,7 @@ module Thief
         counter = 1
         first = true
         attrs = [:name, :external_id, :date_of_birth, :place_of_birth, :nationality,
-          :religion, :gender, :meta_web_user_s, :parents, :children, :eployment_history, 
+          :religion, :gender, :meta_web_user_s, :parents, :children, :employment_history, 
           :signature, :spouse_s, :sibling_s, :weight_kg, :height_meters, :education, 
           :profession, :quotations, :places_lived, :ethnicity, :quotationsbook_id, 
           :age, :tvrage_id]

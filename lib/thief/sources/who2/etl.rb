@@ -31,12 +31,12 @@ module Thief
         exts = []
         document.scan(/href=\"(.+?)\"/) { |link| exts << link[0] }
         
-        sites = [] 
+        sites = {} 
         exts.each do |link|
           doc = open(BASEURL + link).read
           m = doc.match(/<div id=\"content\">.*?<ul>(.*?)<\/ul>.*?<\/div>/m)
           if (m.captures.size == 1)
-            m.captures[0].scan(/href=\"(.+?)\"/) { |l| sites << l[0] }
+            m.captures[0].scan(/<a href=\"(.+?)\">(.+?)<\/a>/) { |l| sites[l[0]] = l[1] }
           end
         end
         puts "Found #{sites.size} biographies"
@@ -51,16 +51,32 @@ module Thief
         puts "Start crawling"
         
         # open every link and parse content
-        links.each do |link|
+        links.each do |link, name|
           doc = open(BASEURL + link).read
+          # name
+          docname = ''
+          mname = doc.match(/<div id=\"content\">.*?<h1>(.+?) Biography<\/h1>.*?<\/div>/m)
+          if (mname != nil and mname.captures.size == 1)
+            docname = mname.captures[0]
+          end
+          parts = name.split(/\s*,\s*/, 2)
+          if parts.length == 2 
+            if docname.strip != (parts[1] + ' ' + parts[0]).strip
+              Thief.logger.error "Linked name #{name} doesn't match document name #{docname}"
+              next
+            end
+          else
+            if docname.strip != name.strip
+              Thief.logger.error "Linked name #{name} doesn't match document name #{docname}"
+              next
+            end
+          end
+          
           person = Person.new
           # external id
           person.external_id = link
           # name
-          mname = doc.match(/<div id=\"content\">.*?<h1>(.+?) Biography<\/h1>.*?<\/div>/m)
-          if (mname != nil and mname.captures.size == 1)
-            person.name = mname.captures[0]
-          end
+          person.name = name
           # profession
           mprofs = doc.match(/<h2 id=\"subtitle\">(.+?)<\/h2>/m)
           if (mprofs != nil and mprofs.captures.size == 1)
