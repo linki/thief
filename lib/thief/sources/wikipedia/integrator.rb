@@ -1,3 +1,4 @@
+# encoding: utf-8
 module Thief
   Nobility = /\s+(von|de|di|van|d’)\s+/
   Clean = /(^\s+|\[|\]|\s+$)/
