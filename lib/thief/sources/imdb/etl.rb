@@ -30,8 +30,8 @@ module Thief
               person_name = $1.split(', ').map(&:strip)
                             
               person = Person.new
-              person.first_name = person_name.last
-              person.last_name  = person_name.first
+              person.first_name = person_name.last[0..254]
+              person.last_name  = person_name.first[0..254]
               person.save!
               
               Thief.logger.debug "#{person.first_name} #{person.last_name}"

@@ -1,4 +1,4 @@
-require 'parsedate'
+require 'parsedate' if RUBY_VERSION < '1.9'
 require 'date'
 
 module Thief
@@ -11,15 +11,17 @@ module Thief
       end
       
       def parseDate(dateString)
-        parts = ParseDate.parsedate(dateString)
-        begin
-          if (parts[0] != nil) # at least a year was found
-            return Date.new(*parts.compact)
+        if defined?(ParseDate)
+          parts = ParseDate.parsedate(dateString)
+          begin
+            if (parts[0] != nil) # at least a year was found
+              return Date.new(*parts.compact)
+            end
+          rescue ArgumentError => e
+            return nil
           end
-        rescue ArgumentError => e
           return nil
         end
-        return nil
       end
       
     end
@@ -27,13 +29,13 @@ module Thief
     def integrate
       namespace::Person.all.each do |person|
         new_person = ::Thief::Person.new
+        new_person.source = self.class.source_name
         self.class.mapping.call(person, new_person)
         new_person.save!
       end
     end
     
   private
-    
     
     def self.source_name
       name.split('::')[1]
