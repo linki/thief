@@ -1,6 +1,8 @@
 require 'parsedate' if RUBY_VERSION < '1.9'
 require 'date'
 
+
+
 module Thief
   class Integrator
     class << self
@@ -21,6 +23,12 @@ module Thief
             return nil
           end
           return nil
+        else
+          begin
+            GermanDate.parse(dateString) if dateString
+          rescue ArgumentError
+            nil
+          end
         end
       end
       
