@@ -9,17 +9,6 @@ module Thief
         else
           target.first_name = source.name
         end
-        if source.date_of_birth
-          target.birthdate = parseDate(source.date_of_birth)
-        end
-        if source.place_of_birth
-          target.birthplace = source.place_of_birth
-        end
-        target.nationality = source.nationality
-        target.religion = source.religion
-        target.gender = source.gender
-        target.profession = source.profession
-        target.source = 'Freebase'
       end
     end
   end

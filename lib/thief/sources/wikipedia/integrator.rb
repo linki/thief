@@ -28,10 +28,10 @@ module Thief
           target.biography = source.short_description.gsub(Clean, '')
         end
         if (source.date_of_birth != nil)
-          target.birthdate = parseDate(source.date_of_birth.gsub(Clean, ''))
+          target.date_of_birth = parseDate(source.date_of_birth.gsub(Clean, ''))
         end
         if (source.place_of_birth != nil)
-          target.birthplace = source.place_of_birth.gsub(Clean, '')
+          target.place_of_birth = source.place_of_birth.gsub(Clean, '')
         end
         if (source.date_of_death != nil)
           target.date_of_death = parseDate(source.date_of_death.gsub(Clean, ''))
@@ -39,7 +39,6 @@ module Thief
         if (source.place_of_death != nil)
           target.place_of_death = source.place_of_death.gsub(Clean, '')
         end
-        target.source = 'Wikipedia'
           
       end
     end

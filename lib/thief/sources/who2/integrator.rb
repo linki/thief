@@ -35,15 +35,14 @@ module Thief
           end
         end
         if source.date_of_birth
-          target.birthdate = parseDate(source.date_of_birth.gsub(/<br\s*?\/>.*$/, '').strip)
+          target.date_of_birth = parseDate(source.date_of_birth.gsub(/<br\s*?\/>.*$/, '').strip)
         end
         if source.place_of_birth
-          target.birthplace = source.place_of_birth.gsub(Tags, '')
+          target.place_of_birth = source.place_of_birth.gsub(Tags, '')
         end
         if source.death
           target.date_of_death = parseDate(source.death.gsub(/<br\s*?\/>.*$/, '').strip)
         end
-        target.source = 'Who2'
       end
     end
   end

@@ -11,8 +11,8 @@ module Thief
     property :last_name,  String   # A varchar type string, for short strings
     property :alternative_name, String
     property :gender, String
-    property :birthdate, Date
-    property :birthplace, String
+    property :date_of_birth, Date
+    property :place_of_birth, String
     property :date_of_death, Date
     property :place_of_death, String
     property :biography, Text

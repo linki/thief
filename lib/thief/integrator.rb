@@ -33,12 +33,16 @@ module Thief
       end
       
     end
-    
+
     def integrate
       namespace::Person.all.each do |person|
         new_person = ::Thief::Person.new
+        # automatic matching
+        (namespace::Person.properties.map(&:name) & ::Thief::Person.properties.map(&:name) - [:id]).each do |property|
+          new_person.send("#{property}=", person.send(property))
+        end
         new_person.source = self.class.source_name
-        self.class.mapping.call(person, new_person)
+        self.class.mapping.call(person, new_person) if self.class.mapping
         new_person.save!
       end
     end
