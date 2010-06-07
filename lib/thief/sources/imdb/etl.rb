@@ -9,6 +9,8 @@ module Thief
         Person.delete_all
               
         sources = %w[actors.list actresses.list] # %w[alternate-versions.list] # directors.list producers.list writers.list
+        
+        gender = {'actors.list' => 'Male', 'actresses.list' => 'Female'}
       
         sources.each do |source|
           download_and_extract_file("http://ftp.sunet.se/pub/tv%2Bmovies/imdb/#{source}.gz", source)
@@ -19,7 +21,7 @@ module Thief
         sources.each do |source|
           found_people = 0
         
-          source_file  = "#{Thief.tmp_dir}/imdb/"
+          source_file  = "#{Thief.tmp_dir}/IMDb/"
           source_file += "cache/" if cached?(source)
           source_file += source
           
@@ -32,6 +34,7 @@ module Thief
               person = Person.new
               person.first_name = person_name.last[0..254]
               person.last_name  = person_name.first[0..254]
+              person.gender     = gender[source]
               person.save!
               
               Thief.logger.debug "#{person.first_name} #{person.last_name}"
@@ -46,7 +49,7 @@ module Thief
         end
 
         sources.each do |source|
-          FileUtils.rm("#{Thief.tmp_dir}/imdb/#{source}") if File.exists?("#{Thief.tmp_dir}/imdb/#{source}")
+          FileUtils.rm("#{Thief.tmp_dir}/IMDb/#{source}") if File.exists?("#{Thief.tmp_dir}/IMDb/#{source}")
         end
       
         Thief.logger.debug "Found #{overall_found_people} people in all sources"

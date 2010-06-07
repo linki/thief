@@ -9,6 +9,7 @@ module Thief
 
       property :first_name, String    # George
       property :last_name,  String    # Clooney
+      property :gender,     String    # From Source file
     end
   end
 end

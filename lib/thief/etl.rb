@@ -2,12 +2,12 @@ module Thief
   class ETL
     def download_file(uri, target_name)
       begin
-        FileUtils.mkdir_p "#{Thief.tmp_dir}/#{source_name}/cache"
+        FileUtils.mkdir_p "#{Thief.tmp_dir}/#{self.class.source_name}/cache"
 
         puts "downloading #{uri}..."
         source_file = open(uri)
 
-        destination = "#{Thief.tmp_dir}/#{source_name}/cache/#{target_name}"
+        destination = "#{Thief.tmp_dir}/#{self.class.source_name}/cache/#{target_name}"
 
         target_file = File.open(destination, 'wb')
         target_file.write(source_file.read)
@@ -19,8 +19,8 @@ module Thief
     
     def extract_file(filename, target_name)
       begin
-        source_path = "#{Thief.tmp_dir}/#{source_name}/cache/#{filename}"
-        destination = "#{Thief.tmp_dir}/#{source_name}/#{target_name}"
+        source_path = "#{Thief.tmp_dir}/#{self.class.source_name}/cache/#{filename}"
+        destination = "#{Thief.tmp_dir}/#{self.class.source_name}/#{target_name}"
 
         puts "extracting #{filename} to #{destination}..."
 
@@ -46,7 +46,7 @@ module Thief
     end
     
     def cached?(filename)
-      File.exists?("#{Thief.tmp_dir}/#{source_name}/cache/#{filename}")
+      File.exists?("#{Thief.tmp_dir}/#{self.class.source_name}/cache/#{filename}")
     end
     
   private
