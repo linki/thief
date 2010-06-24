@@ -35,16 +35,34 @@ module Thief
     end
 
     def integrate
-      namespace::Person.all.each do |person|
-        new_person = ::Thief::Person.new
-        # automatic matching
-        (namespace::Person.properties.map(&:name) & ::Thief::Person.properties.map(&:name) - [:id]).each do |property|
-          new_person.send("#{property}=", person.send(property))
-        end
-        new_person.source = self.class.source_name
-        self.class.mapping.call(person, new_person) if self.class.mapping
-        new_person.save!
+      rowcount = namespace::Person.count
+      init_offset = 1
+      if rowcount > 0
+        init_offset = namespace::Person.first.id
       end
+      offset = init_offset
+      limit = 10000
+      # we are loading the data in smaller chunks to save memory
+      while offset <= rowcount + init_offset
+        namespace::Person.all(:limit => limit, :offset => offset).each do |person|
+          new_person = ::Thief::Person.new
+          # automatic matching
+          (namespace::Person.properties.map(&:name) & ::Thief::Person.properties.map(&:name) - [:id]).each do |property|
+            content = person.send(property)
+            if content && !(content.class == String && content != '')
+              new_person.send("#{property}=", namespace::Integrator.clean(property, content))
+            end
+          end
+          new_person.source = self.class.source_name
+          self.class.mapping.call(person, new_person) if self.class.mapping
+          new_person.save!
+        end
+        offset = offset + limit
+      end
+    end
+    
+    def self.clean(property, content)
+      return content
     end
     
   private

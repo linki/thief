@@ -9,19 +9,20 @@ end
 
 # # # # # # # # # # # # # # # # # # # # #
 
-Thief::Person.delete_all
+#Thief::Person.delete_all
 
-Thief.sources << Thief::Sources::DAPI.new
-# Thief.sources << Thief::Sources::Wikipedia.new
+ Thief.sources << Thief::Sources::DAPI.new
+ Thief.sources << Thief::Sources::Wikipedia.new
 # Thief.sources << Thief::Sources::IMDb.new
-# Thief.sources << Thief::Sources::Freebase.new
-# Thief.sources << Thief::Sources::Who2.new
+ Thief.sources << Thief::Sources::Freebase.new
+ Thief.sources << Thief::Sources::Who2.new
 
-# Thief.fetch
+#Thief.fetch
 Thief.integrate
 # Thief.cleanup
 
-Thief::Person.all.each do |person|
-  puts sprintf("%11s | %30s | %10s | %40s", person.source, person.full_name, person.date_of_birth, person.place_of_birth)
+# takes to much memory to fetch all the records
+#Thief::Person.all.each do |person|
+#  puts sprintf("%11s | %30s | %10s | %40s", person.source, person.full_name, person.date_of_birth, person.place_of_birth)
   # puts "#{person.source}: #{person.full_name}"
-end
+#end

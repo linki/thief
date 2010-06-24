@@ -1,9 +1,11 @@
 source 'http://rubygems.org'
 
-gem 'dm-core'
-gem 'do_sqlite3'
-gem 'do_mysql'
-gem 'do_postgres'
+#gem 'dm-core'
+#gem 'dm-aggregates'
+gem 'data_mapper'
+gem 'dm-sqlite-adapter'
+gem 'dm-mysql-adapter'
+gem 'dm-postgres-adapter'
 gem 'fastthread' # for dm-core
 
 gem 'rake'

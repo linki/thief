@@ -2,6 +2,18 @@ module Thief
   Tags = /<.*?>/
   module Who2
     class Integrator < Thief::Integrator
+      def self.clean(property, content)
+        if content
+          if property == 'death' || property == 'date_of_birth'
+            return content.gsub(/<br\s*?\/>.*$/, '').strip
+          else
+            return content.gsub(Tags, '')
+          end
+        else 
+          return nil
+        end
+      end 
+    
       map do |source, target|
         parts = source.name.split(/,\s*/)
         if (parts.length > 1)

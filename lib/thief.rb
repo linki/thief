@@ -2,6 +2,7 @@
 Dir[File.expand_path('thief/support/*.rb', File.dirname(__FILE__))].each {|f| require f}
 
 require 'dm-core'
+require 'dm-aggregates'
 require 'thief/core_ext/dm-core/model'
 
 require 'thief/source'

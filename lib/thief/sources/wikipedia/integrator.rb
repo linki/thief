@@ -5,20 +5,22 @@ module Thief
   module Wikipedia
     class Integrator < Thief::Integrator
       map do |source, target|
-        parts = source.name.gsub(Clean, '').split(/,\s*/)
-        if (parts.length > 1)
-          target.last_name = parts[0]
-          target.first_name = parts[1]
-          if (parts.length > 2)
-            target.title = parts[2]
-          end
-        else
-          if (mName = source.name.gsub(Clean, '').match(Nobility))
-            parts = (source.name.gsub(Clean, '')).split(Nobility, 2)
-            target.first_name = (parts[0] + ' ' + parts[1]).strip
-            target.last_name = parts[2].strip
+        if source.name
+          parts = source.name.gsub(Clean, '').split(/,\s*/)
+          if (parts.length > 1)
+            target.last_name = parts[0]
+            target.first_name = parts[1]
+            if (parts.length > 2)
+              target.title = parts[2]
+            end
           else
-            target.first_name = source.name.gsub(Clean, '')
+            if (mName = source.name.gsub(Clean, '').match(Nobility))
+              parts = (source.name.gsub(Clean, '')).split(Nobility, 2)
+              target.first_name = (parts[0] + ' ' + parts[1]).strip
+              target.last_name = parts[2].strip
+            else
+              target.first_name = source.name.gsub(Clean, '')
+            end
           end
         end
         if (source.alternative_names != nil)
@@ -40,6 +42,14 @@ module Thief
           target.place_of_death = source.place_of_death.gsub(Clean, '')
         end
           
+      end
+    
+      def self.clean(property, content)
+        if content
+          return content.gsub(Clean, '')
+        else
+          return nil
+        end
       end
     end
   end
