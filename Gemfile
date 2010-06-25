@@ -3,6 +3,7 @@ source 'http://rubygems.org'
 gem 'data_mapper'
 gem 'fastthread'
 gem 'rake'
+gem 'levenshtein'
 
 group :application do
   gem 'sinatra', :require => 'sinatra/base'
