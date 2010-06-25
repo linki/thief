@@ -46,6 +46,7 @@ module Thief
       require 'yaml'
       db_config = YAML.load_file(db_config)[Thief.env][Thief.db_adapter]
     end
+    Bundler.require(Thief.db_adapter) if defined?(Bundler)
     DataMapper.setup(:default, db_config)    
   end
   
