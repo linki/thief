@@ -1,13 +1,14 @@
 source 'http://rubygems.org'
 
 gem 'data_mapper'
-gem 'dm-sqlite-adapter'
-gem 'dm-mysql-adapter'
-gem 'dm-postgres-adapter'
 gem 'fastthread'
-
 gem 'rake'
 
+group :application do
+  gem 'sinatra', :require => 'sinatra/base'
+end
+
+## sources
 group :dapi do
   gem 'rest-client', :require => 'rest_client'
   gem 'yajl-ruby', :require => 'yajl'
@@ -17,10 +18,20 @@ group :wikipedia do
   gem 'rubyzip', :require => 'zip/zip'
 end
 
-group :application do
-  gem 'sinatra', :require => 'sinatra/base'
+## databases
+group :sqlite3 do
+  gem 'dm-sqlite-adapter'  
 end
 
+group :mysql do
+  gem 'dm-mysql-adapter'
+end
+
+group :postgresql do
+  gem 'dm-postgres-adapter'
+end
+
+## environments
 group :test do
   gem 'rspec'
 end
