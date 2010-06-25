@@ -1,22 +1,21 @@
-require 'levenshtein'
-
 module Thief
   class Cleaner2
-    
-    def similarity(person1, person2)
-      return 0.5 * similarity_string(person1.last_name, person2.last_name) +
-             0.5 * similarity_string(person1.first_name, person2.first_name)
+        
+    def weights
+      { :first_name => 0.5, :last_name  => 0.5 }
     end
     
     def merge(present_person, person)
-      present_person.gender = person.gender unless present_person.gender
+      # fill empty properties      
+      (Thief::Person.properties.map(&:name) - [:id]).each do |property|
+        present_person.send("#{property}=", person.send(property)) unless present_person.send(property)
+      end
     end
 
     def cleanup
-      window = []
-      runs = (Thief::Person.count / batch_size).ceil
+      window, runs = [], (Thief::Person.count / batch_size).ceil
       (0..runs).each do |run|
-        Thief::Person.all(:offset => run * batch_size, :limit => batch_size, :order => [:id]).each do |person|
+        Thief::Person.all(:offset => run * batch_size, :limit => batch_size, :order => [:neighbour_key]).each do |person|
           if present_person = already_present?(person, window)
             merge(present_person, person)
             present_person.save          
@@ -29,6 +28,10 @@ module Thief
       end
     end    
 
+    def string_similarity(name1, name2)
+      (name1 && name2) ? 1 - Levenshtein.normalized_distance(name1, name2) : 0
+    end  
+
   private
   
     def already_present?(person, window)
@@ -37,16 +40,19 @@ module Thief
       end
       false
     end
-    
+
     def similar?(person, present_person)
       return similarity(person, present_person) > threshold
     end
-    
-    def similarity_string(name1, name2)
-      if name1 && name2
-        return 1 - Levenshtein.normalized_distance(name1, name2)
+
+    def similarity(person1, person2)
+      weights.inject(0) do |sum, weight|
+        sum += weight[1] * attribute_similarity(person1.send(weight[0]), person2.send(weight[0]), person1.send(weight[0]).class.to_s.downcase.to_sym)
       end
-      return 0
+    end
+
+    def attribute_similarity(name1, name2, type)
+      send("#{type}_similarity", name1, name2)
     end
     
     def threshold
