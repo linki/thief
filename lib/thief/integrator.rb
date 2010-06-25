@@ -35,15 +35,15 @@ module Thief
     end
 
     def integrate
-      rowcount = namespace::Person.count
-      init_offset = 1
-      if rowcount > 0
-        init_offset = namespace::Person.first.id
-      end
-      offset = init_offset
-      limit = 10000
-      # we are loading the data in smaller chunks to save memory
-      while offset <= rowcount + init_offset
+        first_offset = 1
+        last_offset = 0
+        if namespace::Person.count > 0
+          first_offset = namespace::Person.first.id
+          last_offset = namespace::Person.last.id
+        end
+        offset = first_offset
+        limit = 10000
+        while offset <= last_offset
         namespace::Person.all(:limit => limit, :offset => offset).each do |person|
           new_person = ::Thief::Person.new
           # automatic matching

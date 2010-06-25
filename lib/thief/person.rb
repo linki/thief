@@ -20,9 +20,17 @@ module Thief
     property :nationality, String
     property :religion, String
     property :source, String
+    property :neighbour_key, String, :required => true
     
-    has 1, :person_hash, 'Thief::PersonHash'
+    before :valid?, :generate_neighbour_key
 
+    def generate_neighbour_key(context = :default)
+      if last_name || first_name
+        self.neighbour_key = last_name ? last_name[0..2].downcase : '+++'
+        self.neighbour_key += first_name ? first_name[0..2].downcase : '+++'
+      end
+    end
+    
     def name
       [first_name, last_name].compact.join(' ')
     end    
