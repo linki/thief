@@ -1,8 +1,8 @@
 # require all *.rb files in support folder (/lib/thief/support/*.rb)
 Dir[File.expand_path('thief/support/*.rb', File.dirname(__FILE__))].each {|f| require f}
 
-require 'dm-core'
-require 'dm-aggregates'
+Bundler.require(:default) if defined?(Bundler)
+
 require 'thief/core_ext/dm-core/model'
 
 require 'thief/source'
@@ -11,6 +11,7 @@ require 'thief/cleaner'
 require 'thief/etl'
 require 'thief/integrator'
 require 'thief/person'
+require 'thief/person_hash'
 
 # require all *.rb files in sources folder (/lib/thief/sources/*.rb)
 Dir[File.expand_path('thief/sources/*.rb', File.dirname(__FILE__))].each {|f| require f}
@@ -83,4 +84,4 @@ module Thief
   extend self
 end
 
-Bundler.require(:default, Thief.env) if defined?(Bundler)
+Bundler.require(Thief.env) if defined?(Bundler)

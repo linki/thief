@@ -20,6 +20,8 @@ module Thief
     property :nationality, String
     property :religion, String
     property :source, String
+    
+    has 1, :person_hash, 'Thief::PersonHash'
 
     def name
       [first_name, last_name].compact.join(' ')
