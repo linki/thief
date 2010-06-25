@@ -7,4 +7,4 @@ Thief.setup do |config|
   config.database = File.expand_path('../config/database.yml', File.dirname(__FILE__))
 end
 
-# Thief.create_tables
+Thief.create_tables
