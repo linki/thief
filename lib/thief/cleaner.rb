@@ -51,6 +51,7 @@ module Thief
       person2.destroy
       #Thief.logger.debug "Duplicate: #{person1} <-> #{person2}"
       # TODO: merge values of person2 into person1 and delete person2
+
     end
     
     def cleanup

@@ -1,8 +1,11 @@
+require 'levenshtein'
+
 module Thief
   class Cleaner2
     
-    def similar?(person, present_person)
-      person.first_name == present_person.first_name && person.last_name == present_person.last_name
+    def similarity(person1, person2)
+      return 0.5 * similarity_string(person1.last_name, person2.last_name) +
+             0.5 * similarity_string(person1.first_name, person2.first_name)
     end
     
     def merge(present_person, person)
@@ -27,7 +30,7 @@ module Thief
     end    
 
   private
-
+  
     def already_present?(person, window)
       window.each do |present_person|
         return present_person if similar?(person, present_person)
@@ -35,8 +38,19 @@ module Thief
       false
     end
     
+    def similar?(person, present_person)
+      return similarity(person, present_person) > threshold
+    end
+    
+    def similarity_string(name1, name2)
+      if name1 && name2
+        return 1 - Levenshtein.normalized_distance(name1, name2)
+      end
+      return 0
+    end
+    
     def threshold
-      0.9
+      0.8
     end
     
     def batch_size
