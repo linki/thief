@@ -7,11 +7,11 @@ require 'thief/core_ext/dm-core/model'
 
 require 'thief/source'
 require 'thief/cleaner'
+require 'thief/cleaner2'
 
 require 'thief/etl'
 require 'thief/integrator'
 require 'thief/person'
-require 'thief/person_hash'
 
 # require all *.rb files in sources folder (/lib/thief/sources/*.rb)
 Dir[File.expand_path('thief/sources/*.rb', File.dirname(__FILE__))].each {|f| require f}
@@ -34,7 +34,7 @@ module Thief
   end
   
   def cleaner
-    @cleaner ||= Thief::Cleaner.new
+    @cleaner ||= Thief::Cleaner2.new
   end
   
   def configure
