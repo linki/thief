@@ -6,6 +6,7 @@ require 'dm-aggregates'
 require 'thief/core_ext/dm-core/model'
 
 require 'thief/source'
+require 'thief/cleaner'
 
 require 'thief/etl'
 require 'thief/integrator'
@@ -25,6 +26,14 @@ module Thief
 
   def integrate
     sources.each(&:integrate)
+  end
+  
+  def cleanup
+    cleaner.cleanup
+  end
+  
+  def cleaner
+    @cleaner ||= Thief::Cleaner.new
   end
   
   def configure

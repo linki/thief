@@ -1,4 +1,4 @@
-require File.expand_path('../lib/boot', __FILE__)
+require File.expand_path('lib/boot', File.dirname(__FILE__))
 
 require 'rake'
 require 'spec/rake/spectask'
