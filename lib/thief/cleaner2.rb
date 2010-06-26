@@ -47,7 +47,7 @@ module Thief
 
     def similarity(person1, person2)
       weights.inject(0) do |sum, weight|
-        sum += weight[1] * attribute_similarity(person1.send(weight[0]), person2.send(weight[0]), person1.send(weight[0]).class.to_s.downcase.to_sym)
+        sum += weight[1] * attribute_similarity(person1.send(weight[0]), person2.send(weight[0]), :string) # person1.send(weight[0]).class.to_s.downcase.to_sym
       end
     end
 
