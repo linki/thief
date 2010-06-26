@@ -27,8 +27,11 @@ module Thief
     def generate_neighbour_key(context = :default)
       if last_name || first_name
         self.neighbour_key = last_name ? last_name[0..2].downcase : '+++'
+        (3 - self.neighbour_key.length).times {self.neighbour_key += '+'}
         self.neighbour_key += first_name ? first_name[0..2].downcase : '+++'
+        (6 - self.neighbour_key.length).times {self.neighbour_key += '+'}
       end
+      Thief.logger.debug "key: #{self.neighbour_key}"
     end
     
     def name
