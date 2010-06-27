@@ -1,13 +1,8 @@
-<<<<<<< HEAD
 require 'levenshtein'
 require 'date'
 
 module Thief
   class Cleaner2
-    
-    def weighted_attributes
-      return {'last_name' => 0.4, 'first_name' => 0.3, 'profession' => 0.1, 'date_of_birth' => 0.2}
-    end
     
     def weights
       { :first_name => 0.5, :last_name  => 0.5 }
@@ -18,25 +13,13 @@ module Thief
       (Thief::Person.properties.map(&:name) - [:id]).each do |property|
         present_person.send("#{property}=", person.send(property)) unless present_person.send(property)
       end
-    
-    def similarity2(person1, person2)
-      sim = 0
-      weighted_attributes.each_pair do |key, value|
-        if person1.send(key).class == String || person2.send(key).class == String
-          sim += value * similarity_string(person1.send(key), person2.send(key))
-        elsif person1.send(key).class == Date || person2.send(key).class == Date
-          sim += value * similarity_date(person1.send(key), person2.send(key))
-        else
-          # NilClass, what about text?
-        end
-      end
-      return sim 
     end
     
     def similarity(person1, person2)
       sims = {}
       if person1.last_name || person2.last_name 
         sims['last_name'] = [6, similarity_string(person1.last_name, person2.last_name)]
+      end
       sims['first_name'] = [4, similarity_string(person1.first_name, person2.first_name)]
       if person1.date_of_birth && person2.date_of_birth
         sims['date_of_birth'] = [2, similarity_date(person1.date_of_birth, person2.date_of_birth)]
@@ -106,6 +89,10 @@ module Thief
       end
     end    
 
+    def similarity_string(name1, name2)
+      return string_similarity(name1, name2)
+    end
+
     def string_similarity(name1, name2)
       (name1 && name2) ? 1 - Levenshtein.normalized_distance(name1, name2) : 0
     end  
@@ -124,7 +111,7 @@ module Thief
       return similarity(person, present_person) > threshold
     end
 
-    def similarity(person1, person2)
+    def similarity2(person1, person2)
       weights.inject(0) do |sum, weight|
         sum += weight[1] * attribute_similarity(person1.send(weight[0]), person2.send(weight[0]), :string) # person1.send(weight[0]).class.to_s.downcase.to_sym
       end
@@ -193,6 +180,6 @@ module Thief
     def window_size
       100
     end
-        
+      
   end
 end

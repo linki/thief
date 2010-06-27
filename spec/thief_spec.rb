@@ -26,6 +26,16 @@ module Thief
       Thief::Person.count.should == 1
       person1.reload.gender.should == 'Male'
     end
+    
+    it "should clean similar dates" do
+      person1 = Thief::Person.create(:first_name => 'Mickey', :last_name => 'Mouse', :date_of_birth => Date.new(1989, 5, 20))
+      person2 = Thief::Person.create(:first_name => 'Mickey', :last_name => 'Mouse', :date_of_birth => Date.new(1989, 5, 22))
+      person3 = Thief::Person.create(:first_name => 'Mickey', :last_name => 'Mouse', :date_of_birth => Date.new(1989, 8, 13))      
+      
+      Thief.cleaner.cleanup
+      
+      Thief::Person.count.should == 2
+    end
 
   end
 end
