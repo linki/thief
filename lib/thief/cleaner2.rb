@@ -23,11 +23,30 @@ module Thief
     end
     
     def similarity(person1, person2)
-      sim = 0.6 * similarity_string(person1.last_name, person2.last_name) +
-            0.4 * similarity_string(person1.first_name, person2.first_name)
+      sims = {}
+      if person1.last_name || person2.last_name 
+        sims['last_name'] = [6, similarity_string(person1.last_name, person2.last_name)]
+      sims['first_name'] = [4, similarity_string(person1.first_name, person2.first_name)]
       if person1.date_of_birth && person2.date_of_birth
-        sim = 0.8 * sim + 0.2 * similarity_date(person1.date_of_birth, person2.date_of_birth) 
+        sims['date_of_birth'] = [2, similarity_date(person1.date_of_birth, person2.date_of_birth)]
       end
+      if person1.place_of_birth && person2.place_of_birth
+        
+      end
+      if person1.profession && person2.profession
+        sims['profession'] = [2, similarity_list(person1.profession, person2.profession)]
+      end
+      sim = 0.0
+      weights = 0.0
+      sims.each do |weight, s| 
+        sim += weight * s
+        weights += weight
+      end
+      return sim / weights
+    end
+    
+    def similarity_list(list1, list2)
+      return 1.0
     end
     
     def similarity_date(date1, date2)
