@@ -86,4 +86,4 @@ module Thief
   extend self
 end
 
-Bundler.require(Thief.env) if defined?(Bundler)
+Bundler.require(ENV['THIEF_ENV']) if defined?(Bundler) && ENV['THIEF_ENV']

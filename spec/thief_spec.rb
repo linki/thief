@@ -5,7 +5,7 @@ module Thief
     before do
       Thief::Person.delete_all
     end
-    
+
     it "should clean same first and last name" do
       person1 = Thief::Person.create(:first_name => 'Mickey', :last_name => 'Mouse')
       person2 = Thief::Person.create(:first_name => 'Mickey', :last_name => 'Rourke')
