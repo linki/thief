@@ -37,5 +37,17 @@ module Thief
       Thief::Person.count.should == 2
     end
 
+    it "should clean" do
+      person1 = Thief::Person.create(:first_name => 'Amy', :last_name => 'Adams', :date_of_birth => Date.new(1974, 8, 20), :place_of_birth => 'Vincenza, Italy', :profession => 'Actor')
+      person2 = Thief::Person.create(:first_name => 'Amy', :last_name => 'Adams', :date_of_birth => Date.new(1974, 8, 20), :place_of_birth => 'Aviano, Italien', :profession => 'Actor')
+      person3 = Thief::Person.create(:first_name => 'Amy', :last_name => 'Adams', :place_of_birth => 'Greater Auckland')
+      person4 = Thief::Person.create(:first_name => 'Amy', :last_name => 'Adams', :place_of_birth => 'Kansas City', :profession => 'Singer')
+      person5 = Thief::Person.create(:first_name => 'Amy', :last_name => 'Adams', :place_of_birth => 'Vincenza', :profession => 'Actor')
+      
+      Thief.cleaner.cleanup
+      
+      Thief::Person.count.should == 3
+    end
+
   end
 end
