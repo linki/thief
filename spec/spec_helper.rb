@@ -1,4 +1,4 @@
-ENV['RACK_ENV'] ||= ENV['THIEF_ENV'] ||= 'test'
+ENV['RACK_ENV'] = ENV['THIEF_ENV'] = 'test'
 require File.expand_path('../lib/boot', File.dirname(__FILE__))
 
 require 'thief'

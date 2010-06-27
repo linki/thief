@@ -8,12 +8,11 @@ require 'thief'
 Spec::Rake::SpecTask.new(:spec)
 task :default => :spec
 
-Thief.setup do |config|
-  config.database = File.expand_path('config/database.yml', File.dirname(__FILE__))
-end
-
 namespace :thief do
   task :create_tables do
+    Thief.setup do |config|
+      config.database = File.expand_path('config/database.yml', File.dirname(__FILE__))
+    end
     Thief.create_tables
   end
 end
