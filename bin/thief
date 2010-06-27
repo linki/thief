@@ -12,13 +12,13 @@ end
 #Thief::Person.delete_all
 
  Thief.sources << Thief::Sources::DAPI.new
- Thief.sources << Thief::Sources::Wikipedia.new
-# Thief.sources << Thief::Sources::IMDb.new
- Thief.sources << Thief::Sources::Freebase.new
  Thief.sources << Thief::Sources::Who2.new
+ Thief.sources << Thief::Sources::Wikipedia.new
+ Thief.sources << Thief::Sources::Freebase.new
+# Thief.sources << Thief::Sources::IMDb.new
 
 #Thief.fetch
-Thief.integrate
+ Thief.integrate
 # Thief.cleanup
 
 # takes to much memory to fetch all the records
