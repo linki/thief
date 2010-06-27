@@ -18,8 +18,9 @@ end
 # Thief.sources << Thief::Sources::IMDb.new
 
 #Thief.fetch
- Thief.integrate
-# Thief.cleanup
+# Thief.integrate
+ Thief.cleanup
+
 
 # takes to much memory to fetch all the records
 #Thief::Person.all.each do |person|

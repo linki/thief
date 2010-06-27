@@ -1,6 +1,7 @@
 .bundle
 .DS_Store
 .idea
+*.rbc
 config/database.yml
 db/*.sqlite3
 log/*.log
