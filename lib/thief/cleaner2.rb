@@ -60,7 +60,8 @@ module Thief
           count += 1 if similarity_string(elem1, elem2) > 0.8 
         end
       end
-      return [count / [1, list1.length, list2.length].min.to_f, 1].min
+      sim = count / [1, list1.length, list2.length].min.to_f
+      return sim > 1.0 ? 1.0 : sim
     end
     
     def similarity_date(date1, date2)
@@ -92,6 +93,7 @@ module Thief
     end
 
     def merge(present_person, person)
+      Thief.logger.error "merge #{present_person.id}: #{present_person.name} and #{person.id}: #{person.name}"
       present_person.first_name = choose_name(present_person.first_name, person.first_name)
       present_person.last_name = choose_name(present_person.last_name, person.last_name)
       
@@ -115,11 +117,14 @@ module Thief
       if list1 && list2
         result = list1.split(/,\s*/)
         list2.split(/,\s*/).each do |new_elem|
+          found = false
           list1.split(/,\s*/).each do |old_elem|
-            if similarity_string(new_elem, old_elem) < 0.9
-              result.push new_elem
+            if similarity_string(new_elem, old_elem) > 0.8
+              found = true
+              break
             end
           end
+          result.push new_elem if !found
         end
         return result.join(', ')[0..254]
       elsif list1
@@ -168,7 +173,7 @@ module Thief
     end
     
     def window_size
-      100
+      50
     end
       
   end
