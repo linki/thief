@@ -11,7 +11,7 @@ module Thief
       person2 = Thief::Person.create(:first_name => 'Mickey', :last_name => 'Rourke')
       person3 = Thief::Person.create(:first_name => 'Mickey', :last_name => 'Mouse')
     
-      Thief.cleaner.cleanup
+      Thief.cleanup
     
       Thief::Person.count.should == 2      
       Thief::Person.all.should == [person1, person2]
@@ -21,7 +21,7 @@ module Thief
       person1 = Thief::Person.create(:first_name => 'Mickey', :last_name => 'Mouse', :gender => nil)
       person2 = Thief::Person.create(:first_name => 'Mickey', :last_name => 'Mouse', :gender => 'Male')
 
-      Thief.cleaner.cleanup
+      Thief.cleanup
       
       Thief::Person.count.should == 1
       person1.reload.gender.should == 'Male'
@@ -32,7 +32,7 @@ module Thief
       person2 = Thief::Person.create(:first_name => 'Mickey', :last_name => 'Mouse', :date_of_birth => Date.new(1989, 5, 22))
       person3 = Thief::Person.create(:first_name => 'Mickey', :last_name => 'Mouse', :date_of_birth => Date.new(1989, 8, 13))      
       
-      Thief.cleaner.cleanup
+      Thief.cleanup
       
       Thief::Person.count.should == 2
     end
@@ -44,7 +44,7 @@ module Thief
       person4 = Thief::Person.create(:first_name => 'Amy', :last_name => 'Adams', :place_of_birth => 'Kansas City', :profession => 'Singer')
       person5 = Thief::Person.create(:first_name => 'Amy', :last_name => 'Adams', :place_of_birth => 'Vincenza', :profession => 'Actor')
       
-      Thief.cleaner.cleanup
+      Thief.cleanup
       
       Thief::Person.count.should == 3
     end
@@ -56,7 +56,7 @@ module Thief
     person4 = Thief::Person.create(:first_name => 'Mickey', :last_name => 'Mouse', :place_of_birth => 'Detroit, USA')
     person5 = Thief::Person.create(:first_name => 'Mickey', :last_name => 'Mouse', :profession => 'Politician', :date_of_birth => Date.new(1960, 8, 12))
     
-    Thief.cleaner.cleanup
+    Thief.cleanup
   
     Thief::Person.count.should == 2      
     Thief::Person.all.should == [person1, person5]

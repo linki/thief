@@ -7,8 +7,8 @@ module Thief
     property :id, Serial   # An auto-increment integer key
 
     property :title, String, :length => 255 # A varchar type string, for short strings        
-    property :first_name, String, :length => 255   # A varchar type string, for short strings
-    property :last_name,  String, :length => 255   # A varchar type string, for short strings
+    property :first_name, String, :length => 255, :index => true   # A varchar type string, for short strings
+    property :last_name,  String, :length => 255, :index => true   # A varchar type string, for short strings
     property :alternative_name, String, :length => 255
     property :gender, String, :length => 255
     property :date_of_birth, Date
@@ -16,7 +16,7 @@ module Thief
     property :date_of_death, Date
     property :place_of_death, String, :length => 255
     property :biography, Text
-    property :profession, String, :length => 255
+    property :profession, String, :length => 255, :index => true
     property :nationality, String, :length => 255
     property :religion, String, :length => 255
     property :source, String, :length => 255
@@ -39,6 +39,10 @@ module Thief
 
     def full_name
       [title, name].compact.join(' ')
-    end    
+    end
+    
+    def age
+      Date.today.year - date_of_birth.year if date_of_birth
+    end
   end
 end

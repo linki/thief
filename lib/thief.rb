@@ -6,8 +6,10 @@ Bundler.require(:default) if defined?(Bundler)
 require 'thief/core_ext/dm-core/model'
 
 require 'thief/source'
-require 'thief/cleaner'
-require 'thief/cleaner2'
+
+# require all *.rb files in cleaners folder (/lib/thief/cleaners/*.rb)
+Dir[File.expand_path('thief/cleaners/*.rb', File.dirname(__FILE__))].each { |f| require f }
+
 require 'thief/geo_coder'
 
 require 'thief/etl'
@@ -15,8 +17,12 @@ require 'thief/integrator'
 require 'thief/person'
 require 'thief/geo_person'
 
+require 'thief/tag'
+require 'thief/tag_link'
+
+
 # require all *.rb files in sources folder (/lib/thief/sources/*.rb)
-Dir[File.expand_path('thief/sources/*.rb', File.dirname(__FILE__))].each {|f| require f}
+Dir[File.expand_path('thief/sources/*.rb', File.dirname(__FILE__))].each { |f| require f }
 
 module Thief
   def sources
@@ -40,7 +46,44 @@ module Thief
   end
   
   def cleaner
-    @cleaner ||= Thief::Cleaner2.new
+    @cleaner ||= Thief::Cleaners::Cleaner2.new
+  end
+  
+  def compute_tags
+    @professions, @profession_links = Hash.new(0), Hash.new(0)
+    person_count = Thief::Person.count(:conditions => ['profession NOT NULL AND profession != ?', ''])
+    runs = (person_count / 10000).ceil
+    (0..runs).each do |run|
+      Thief::Person.all(:conditions => ['profession NOT NULL AND profession != ?', ''], :offset => run * 10000, :limit => 10000).each do |person|
+        professions = person.profession && person.profession.split(',')
+        if professions
+          professions.each do |profession|
+            cleaned_profession = profession.gsub(/<\/?[^>]*>/, "").gsub("\n", "").strip
+            @professions[cleaned_profession] += 1 unless cleaned_profession.empty?
+          end
+          if professions.size > 1
+            for i in 0..(professions.size-2)
+              cleaned_profession_1 = professions[i].gsub(/<\/?[^>]*>/, "").gsub("\n", "").strip
+              for j in (i+1)..(professions.size-1)
+                cleaned_profession_2 = professions[j].gsub(/<\/?[^>]*>/, "").gsub("\n", "").strip                
+                @profession_links[[cleaned_profession_1, cleaned_profession_2].sort] += 1
+              end
+            end
+          end
+        end
+      end
+      Thief.logger.error "processed #{(run + 1) * 10000} of #{person_count} people."
+    end
+    
+    Thief::Tag.delete_all
+    @professions.each do |profession|
+      tag = Thief::Tag.create!(:name => profession[0], :count => profession[1])
+    end
+
+    Thief::TagLink.delete_all
+    @profession_links.each do |profession_link|
+      Thief::TagLink.create!(:source_tag_name => profession_link[0][0], :target_tag_name => profession_link[0][1], :count => profession_link[1])
+    end
   end
   
   def geocoder

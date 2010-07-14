@@ -15,4 +15,12 @@ namespace :thief do
     end
     Thief.create_tables
   end
+  
+  task :compute_tags do
+    Thief.setup do |config|
+      config.database = File.expand_path('config/database.yml', File.dirname(__FILE__))
+    end
+      
+    Thief.compute_tags
+  end
 end
