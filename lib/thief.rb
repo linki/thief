@@ -12,6 +12,7 @@ require 'thief/cleaner2'
 require 'thief/etl'
 require 'thief/integrator'
 require 'thief/person'
+require 'thief/geo_person'
 
 # require all *.rb files in sources folder (/lib/thief/sources/*.rb)
 Dir[File.expand_path('thief/sources/*.rb', File.dirname(__FILE__))].each {|f| require f}
@@ -35,6 +36,10 @@ module Thief
   
   def cleaner
     @cleaner ||= Thief::Cleaner2.new
+  end
+  
+  def geocoder
+    @geocoder ||= Thief::GeoCoder.new
   end
   
   def configure
