@@ -10,7 +10,7 @@ module Net
 
         def initialize(*args)
             old_initialize(*args)
-            @read_timeout = 2*60     # 3 minutes
+            @read_timeout = 2*60     # 2 minutes
         end
     end
 end

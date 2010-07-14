@@ -20,7 +20,7 @@ module Thief
     property :nationality, String, :length => 255
     property :religion, String, :length => 255
     property :source, String, :length => 255
-    property :neighbour_key, String, :length => 255, :required => true
+    property :neighbour_key, String, :length => 255, :required => true, :index => true
     
     before :valid?, :generate_neighbour_key
 

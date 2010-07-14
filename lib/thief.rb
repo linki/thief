@@ -8,6 +8,7 @@ require 'thief/core_ext/dm-core/model'
 require 'thief/source'
 require 'thief/cleaner'
 require 'thief/cleaner2'
+require 'thief/geo_coder'
 
 require 'thief/etl'
 require 'thief/integrator'
@@ -32,6 +33,10 @@ module Thief
   
   def cleanup
     cleaner.cleanup
+  end
+  
+  def geocode
+    geocoder.geocode
   end
   
   def cleaner

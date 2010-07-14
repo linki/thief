@@ -3,6 +3,7 @@ source 'http://rubygems.org'
 gem 'data_mapper'
 gem 'fastthread'
 gem 'levenshtein'
+gem 'json'
 
 gem 'thor'
 gem 'rake'

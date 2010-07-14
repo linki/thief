@@ -14,5 +14,9 @@ module Thief
     end
     
     set :views, File.expand_path('application/views', File.dirname(__FILE__))
+    
+    get '/maps' do
+      erb :maps
+    end
   end
 end

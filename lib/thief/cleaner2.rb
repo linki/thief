@@ -173,7 +173,7 @@ module Thief
     end
     
     def window_size
-      50
+      20
     end
       
   end

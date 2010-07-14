@@ -19,7 +19,8 @@ end
 
 #Thief.fetch
 # Thief.integrate
- Thief.cleanup
+# Thief.cleanup
+Thief.geocode
 
 
 # takes to much memory to fetch all the records
