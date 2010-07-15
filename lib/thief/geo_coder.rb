@@ -18,8 +18,33 @@ module Thief
   private
   
     def lookup(location)
-      response = open("#{GEOSERVICE}#{RETURNTYPE}?address=#{encode_location(location)}&language=#{LANGUAGE}&sensor=false").read
-      return JSON.parse(response)
+      over_quota = false
+      count = 0
+      loop do
+        begin
+          response = JSON.parse(open("#{GEOSERVICE}#{RETURNTYPE}?address=#{encode_location(location)}&language=#{LANGUAGE}&sensor=false").read)
+        rescue => e
+          sleep(10)
+        else 
+          if response['status'] == 'OK'
+            if over_quota
+              Thief.logger.error "Continuing Geocoding" 
+              over_quota = false
+            end
+            return response['results'][0]
+          elsif response['status'] == 'OVER_QUERY_LIMIT'
+            if count == 5
+              Thief.logger.error "Quota exceeded, change your IP"
+              over_quota = true
+            end
+            count += 1
+            sleep(1)
+          else
+            Thief.logger.error "#{response['status']} - Couldn't geocode: #{location}"
+            return nil
+          end
+        end
+      end
     end
 
     def encode_location(location)
@@ -48,65 +73,29 @@ module Thief
     end
     
     def add_place_of_death(old_person, new_person)
-      if old_person.place_of_death != nil
-        loop do
-          begin
-            response = lookup(old_person.place_of_death)
-          rescue SocketError => e
-            sleep(10)
-          else
-            if response['status'] == 'OK'
-              new_person.place_of_death = response['results'][0]['formatted_address']
-              break
-            elsif response['status'] == 'OVER_QUERY_LIMIT'  
-              sleep(1)
-            else
-              new_person.place_of_death = old_person.place_of_death
-              break
-            end
-          end
+      if old_person.place_of_death != nil and old_person.place_of_death != ''
+        response = lookup(old_person.place_of_death)
+        if response != nil
+          new_person.place_of_death = response['formatted_address']
+        else
+          new_person.place_of_death = old_person.place_of_death
         end
       end
     end
 
     def run
-      over_quota = false
-      runs = (Thief::Person.count(:place_of_birth.not => nil, :profession.not => nil, :date_of_birth.not => nil) / batch_size).ceil
+      runs = (Thief::Person.count(:place_of_birth.not => nil, :place_of_birth.not => '', :profession.not => nil, :profession.not => '', :date_of_birth.not => nil) / batch_size).ceil
       (0..runs).each do |run|
-      Thief::Person.all(:offset => run * batch_size, :limit => batch_size, :place_of_birth.not => nil, :profession.not => nil, :date_of_birth.not => nil).each do |person|
-        count = 0
-        loop do
-          begin
-            response = lookup(person.place_of_birth)
-          rescue SocketError => e
-            sleep(10)
-          else
-            if response['status'] == 'OK'
-              if over_quota
-                Thief.logger.error "Continuing Geocoding" 
-                over_quota = false
-              end
-              new_person = Thief::GeoPerson.new
-              copy_old_content(person, new_person)
-              add_new_content(new_person, response['results'][0])
-              add_place_of_death(person, new_person)
-              new_person.save
-              sleep(0.5)
-              break
-            elsif response['status'] == 'OVER_QUERY_LIMIT'
-              if count == 5
-                Thief.logger.error "Quota exceeded, change your IP"
-                over_quota = true
-              end
-              count += 1
-              sleep(1)              
-            else 
-              Thief.logger.error "#{response['status']} - Couldn't geocode: #{person.place_of_birth}"
-              break
-            end
+        Thief::Person.all(:offset => run * batch_size, :limit => batch_size, :place_of_birth.not => nil, :place_of_birth.not => '', :profession.not => nil, :profession.not => '', :date_of_birth.not => nil).each do |person|
+          response = lookup(person.place_of_birth)
+          if response != nil
+            new_person = Thief::GeoPerson.new
+            copy_old_content(person, new_person)
+            add_new_content(new_person, response)
+            add_place_of_death(person, new_person)
+            new_person.save
           end
         end
-      end
       end
     end
     
