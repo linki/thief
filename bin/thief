@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require File.expand_path('../../lib/boot', __FILE__)
+require File.expand_path('../lib/boot', File.dirname(__FILE__))
 
 require 'thief'
 

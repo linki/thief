@@ -1,0 +1,57 @@
+<p>
+  <a href="/">People Finder</a> |
+  <a href="/cloud">Professions Cloud</a> |
+  <a href="/pairs">Professions Pairs</a>
+</p>
+
+<h1><%= @person.full_name %></h1>
+<table>
+  <tr>
+    <td width="20%">Gender</td>
+    <td width="80%"><%= @person.gender %></td>
+  </tr>
+  <tr>
+    <td>Nationality</td>
+    <td><%= @person.nationality %></td>
+  </tr>
+  <tr>
+    <td>Religion</td>
+    <td><%= @person.religion %></td>
+  </tr>
+  <tr>
+    <td>Profession</td>
+    <td><%= @person.profession %></td>
+  </tr>
+  <tr>
+    <td>Alternative Name</td>
+    <td><%= @person.alternative_name %></td>
+  </tr>
+  <tr>
+    <td>Date of Birth</td>
+    <td><%= @person.date_of_birth %> (<%= @person.age %>)</td>
+  </tr>
+  <tr>
+    <td>Place of Birth</td>
+    <td><%= @person.place_of_birth %></td>
+  </tr>
+  <tr>
+    <td>Date of Death</td>
+    <td><%= @person.date_of_death %></td>
+  </tr>
+  <tr>
+    <td>Place of Death</td>
+    <td><%= @person.place_of_death %></td>
+  </tr>
+  <tr>
+    <td>Biography</td>
+    <td><%= @person.biography %></td>
+  </tr>
+  <tr>
+    <td>Source</td>
+    <td><%= @person.source %></td>
+  </tr>
+</table>
+
+<p>
+  <a href="/?search=<%= params[:search] %>">Back to list</a>
+</p>

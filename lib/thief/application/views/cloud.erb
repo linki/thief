@@ -1,0 +1,22 @@
+<p>
+  <a href="/">People Finder</a> |
+  <a href="/cloud">Professions Cloud</a> |
+  <a href="/pairs">Professions Pairs</a>
+</p>
+
+<style type="text/css" media="screen">
+  <% (1..20).each do |lvl| %>
+    .cloud-<%= lvl %> { font-size: <%= 1 + Math.log(lvl) %>em; }
+  <% end %>
+</style>
+
+<h1>Cloud</h1>
+
+<form action="/cloud" method="get">
+  <input type="text" name="filter" value="<%= params[:filter] %>">
+  <input type="submit" value="Filter">
+</form>
+
+<% @cloud.each do |tag| %>
+  <span class="cloud-<%= tag[1] %>"><a href="/professions?search=<%= tag[0] %>"><%= tag[0] %></a></span>
+<% end %>

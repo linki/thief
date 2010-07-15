@@ -16,4 +16,19 @@ module Thief
       ::Thief.create_tables
     end  
   end
+
+  class Tags < Thor
+    desc "create_tables --env ENVIRONMENT --adapter ADAPTER", "populate the tags and tag links table from the data in people"
+    method_options %w( env -e ) => ::Thief.env, %w( adapter -a ) => ::Thief.db_adapter
+    def compute
+      ENV['THIEF_ENV']        ||= options[:environment]
+      ENV['THIEF_DB_ADAPTER'] ||= options[:adapter]
+      
+      ::Thief.setup do |config|
+        config.database = File.expand_path('config/database.yml', File.dirname(__FILE__))
+      end
+      
+      ::Thief.compute_tags
+    end  
+  end
 end

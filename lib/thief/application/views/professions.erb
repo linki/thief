@@ -6,17 +6,17 @@
 
 <h1>Found People: <%= @people_count %></h1>
 
-<form action="/" method="get">
+<form action="/professions" method="get">
   <input type="text" name="search" value="<%= params[:search] %>">
   <input type="submit" value="Search">
 </form>
 
 <p>
 <% if (params[:page] || 0).to_i > 0 %>
-  <a href="/?search=<%= params[:search] %>&page=<%= params[:page].to_i - 1 %>"><<</a> ||
+  <a href="/professions?search=<%= params[:search] %>&page=<%= params[:page].to_i - 1 %>"><<</a> ||
 <% end %>
 <% if (params[:page] || 0).to_i < @people_count / 100 %>
-  <a href="/?search=<%= params[:search] %>&page=<%= params[:page].to_i + 1 %>">>></a>
+  <a href="/professions?search=<%= params[:search] %>&page=<%= params[:page].to_i + 1 %>">>></a>
 <% end %>
 </p>
 
