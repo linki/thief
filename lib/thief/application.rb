@@ -33,6 +33,7 @@ module Thief
           weight = 20 * tag_link.count / max
           @cloud[tag_link.source_tag_name] = weight if weight > 0
         end
+        @map_data = repository(:default).adapter.select("select country, country_code, count(*) as count from geo_people where profession like ? group by country;", params[:filter])
       else
         max = Thief::Tag.max(:count)
         @cloud = Hash.new
@@ -40,6 +41,7 @@ module Thief
           weight = 20 * tag.count / max
           @cloud[tag.name] = weight if weight > 0
         end
+        @map_data = []
       end
       
       erb :cloud
@@ -71,6 +73,7 @@ module Thief
     end
         
     set :views, File.expand_path('application/views', File.dirname(__FILE__))
+    set :public, File.expand_path('application/static', File.dirname(__FILE__))
     
     get '/maps' do
       erb :maps

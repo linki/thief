@@ -1,2 +1,27 @@
-<h1>Spread of People over Nations</h1>
-<script src="http://www.gmodules.com/ig/ifr?url=http://www.google.com/ig/modules/geomap.xml&up__table_query_url=http://tables.googlelabs.com/gvizdata?tq=select+gvizcountry(col0)%252Ccol1%252Ccol0+from+217147++skip+0+limit+46&up__table_query_refresh_interval=0&up_region=world&up_dataMode=regions&w=600&h=400&border=%23ffffff%7C3px%2C1px+solid+%23999999&synd=open&output=js"></script>
+<h1>Spread of Actors over Nations</h1>
+
+<div id="mapbox"></div>
+<!-- ammap script-->
+<script type="text/javascript" src="ammap/swfobject.js"></script>
+
+ 
+<script type="text/javascript">
+   // <![CDATA[		
+   	var so = new SWFObject("ammap/ammap.swf", "ammap", "900", "600", "8", "#444444");
+   	so.addVariable("path", "ammap/");
+   	so.addVariable("settings_file", escape("ammap/ammap_settings.xml"));
+//	so.addVariable("data_file", escape("ammap/ammap_data.xml"));
+   //	so.addVariable("map_data", '<map map_file="maps/world.swf"></map>');
+	so.addVariable("map_data", escape("<map map_file=\"maps/world.swf\" tl_long=\"-168.49\" tl_lat=\"83.63\" br_long=\"190.3\" br_lat=\"-55.58\" zoom_x=\"0%\" zoom_y=\"0%\" zoom=\"100%\">\
+	<areas>\
+		<area title=\"Germany\" mc_name=\"DE\" value=\"1000\"></area>\
+		<area title=\"United States\" mc_name=\"US\" value=\"3333\"></area>\
+		<area title=\"United Kingdom\" mc_name=\"GB\" value=\"800\"></area>\
+	</areas>\
+	</map>"));
+   	so.write("mapbox");
+  // ]]>
+</script>
+
+
+<!-- end of ammap script -->

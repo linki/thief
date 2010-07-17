@@ -20,3 +20,28 @@
 <% @cloud.each do |tag| %>
   <span class="cloud-<%= tag[1] %>"><a href="/professions?search=<%= tag[0] %>"><%= tag[0] %></a></span>
 <% end %>
+
+
+<% if not @map_data.empty? %>
+	<hr/>
+	<h2>Spread of famous <%= params[:filter] %></h2>
+	<div id="map_container"></div>
+	<script type="text/javascript" src="ammap/swfobject.js"></script>
+
+
+	<script type="text/javascript">
+	   // <![CDATA[		
+	   	var so = new SWFObject("ammap/ammap.swf", "ammap", "900", "600", "8", "#444444");
+	   	so.addVariable("path", "ammap/");
+	   	so.addVariable("settings_file", escape("ammap/ammap_settings.xml"));
+	//	so.addVariable("data_file", escape("ammap/ammap_data.xml"));
+	   //	so.addVariable("map_data", '<map map_file="maps/world.swf"></map>');
+		so.addVariable("map_data", escape("<map map_file=\"maps/world.swf\" tl_long=\"-168.49\" tl_lat=\"83.63\" br_long=\"190.3\" br_lat=\"-55.58\" zoom_x=\"0%\" zoom_y=\"0%\" zoom=\"100%\">\
+		<areas>\
+		<% @map_data.each do |record| %><area title=\"<%= record.country %>\" mc_name=\"<%= record.country_code %>\" value=\"<%= record.count %>\"></area>\
+			<% end %></areas>\
+		</map>"));
+	   	so.write("map_container");
+	  // ]]>
+	</script>
+<% end %>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!--map map_file="maps/world.swf" tl_long="-168.49" tl_lat="83.63" br_long="190.3" br_lat="-55.58" zoom_x="0%" zoom_y="0%" zoom="100%">
+<areas>
+ 	<area title="Germany" mc_name="DE" value="1000"></area>
+	<area title="United States" mc_name="US" value="3333"></area>
+	<area title="United Kingdom" mc_name="UK" value="800"></area>
+      <area title="borders" mc_name="borders" color="#FFFFFF" balloon="false"></area>
+  </areas>
+
+
+</map-->

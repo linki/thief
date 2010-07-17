@@ -99,7 +99,6 @@ module Thief
       end
     end
     
-    
     def batch_size
       10000
     end
