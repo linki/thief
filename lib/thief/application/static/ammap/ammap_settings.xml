@@ -41,10 +41,10 @@
   </background>
   
   <zoom>                                                      <!-- zoom control -->
-    <enabled></enabled>                                       <!-- [true] (true / false) whether to display zoom control or not -->
+    <enabled>false</enabled>                                       <!-- [true] (true / false) whether to display zoom control or not -->
     <locked></locked>                                         <!-- [false] (true / false) whether it would be possible to drag zoom bar when dragging "home" icon -->
     <mouse_wheel_enabled></mouse_wheel_enabled>               <!-- [true] (true / false) whether to enable zooming with mouse wheel. Mouse wheel work only after user clicks somewhere on a flash. To workaround this issue, you have to add: onLoad="ammap.focus()" to your html <body> -->    
-    <arrows_enabled></arrows_enabled>                         <!-- [true] (true / false) whether to display navigation arrows or not -->
+    <arrows_enabled>false</arrows_enabled>                         <!-- [true] (true / false) whether to display navigation arrows or not -->
     <home_link_enabled></home_link_enabled>                   <!-- [true] (true / false) whether to display home link or not (home link is only displayed if arrows are enabled) -->    
     <step_size></step_size>                                   <!-- [10] (Number) when moving map with navigation arrows, the map moves by step_size% of flash width or height -->
     <color></color>                                           <!-- [#990000] (hex color code) background color of "+", "-", scroller buttons and navigation arrows -->

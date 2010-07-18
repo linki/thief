@@ -75,8 +75,5 @@ module Thief
     set :views, File.expand_path('application/views', File.dirname(__FILE__))
     set :public, File.expand_path('application/static', File.dirname(__FILE__))
     
-    get '/maps' do
-      erb :maps
-    end
   end
 end

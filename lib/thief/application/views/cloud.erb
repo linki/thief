@@ -22,7 +22,7 @@
 <% end %>
 
 
-<% if not @map_data.empty? %>
+<% if @map_data and not @map_data.empty? %>
 	<hr/>
 	<h2>Spread of famous <%= params[:filter] %></h2>
 	<div id="map_container"></div>
